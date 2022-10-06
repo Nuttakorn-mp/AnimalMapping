@@ -4,6 +4,7 @@ import CreateBox from '@/components/CreateBox';
 import AnimalList from '@/components/AnimalList';
 import Views from '@/components/Views';
 import ViewsData from '@/components/ViewsData';
+import NotFound from '@/components/NotFound';
 
 
 Vue.use(Router)
@@ -14,6 +15,7 @@ const routes = [
   {name:'views-data',path:'/views/:animalName', component:ViewsData, props:true},
   {name:'modify',path:'/modify-data', component:AnimalList, props:true},
   {path:'/', redirect:'/modify-data' ,component:AnimalList, props: true},
+  { path: "*", component: NotFound }
 ];
 // Router.replace({ path: '*', redirect: '/modify-data' })
 export default routes;  
