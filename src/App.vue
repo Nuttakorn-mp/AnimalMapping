@@ -1,15 +1,5 @@
 <template>
   <div id="app" class="header">
-    <!-- <CreateBox/> -->
-    <!-- <Slide>
-      <span>Model</span>
-      <router-link to="/modify-data">
-        <span>Modify Data</span>
-      </router-link>
-      <router-link to="/add-data">
-        <span>Add Data</span>
-      </router-link>
-    </Slide> -->
     <router-view></router-view>
   </div>
 </template>
