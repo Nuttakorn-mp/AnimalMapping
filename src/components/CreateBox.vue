@@ -997,13 +997,8 @@ export default {
 
       // this.$nextTick(console.log("add Line is run "));
     },
-    store() {
-      // เอาไว้ใช้ลอง เขียนอะไรใหม่ๆก่อนใช้จริง
-      // this.animaldata = this.$route.params.animalData.data;
-      // console.log(Object.values( this.dataGet[0]).length);
-
-      // var imgloading = this.dataGet[0].animal.completeImageLink
-      // var a = "drop data here";
+    store() {// เอาไว้ใช้ลอง เขียนอะไรใหม่ๆก่อนใช้จริง
+      
       console.log("sssssssssssssssssss")
       console.log(this.$route.params.pullData);
       // console.log(a.length)
@@ -1208,41 +1203,29 @@ export default {
       };
     },
     async postAPI(data) {
-      // Real IP DB         : "http://202.28.24.50:3000/animal/bone" --- อันนี้ฝั่งสัตวแพทย์ปิดเซฟอยู่
-      // P pond DB On Local : "http://localhost:3000/animal/bone"  --- ใช้อันนี้ทดสอบไปก่อน
-      // My DB              : "http://localhost:4000/getAnimalName/"+data.animalId --อันนี้ที่ทำเอง
-      // axios.post("http://202.28.24.50:3000/animal/bone", data).then( ใช้บรรทัดนี้แทน ในตอนใช้งานจริง
-      // http://192.168.1.106:4000 ==> current use
-      axios.put("http://localhost:4000/getAnimalName/"+data.animalId, data).then( //บรรทัดนี้เอาไว้ใช้ตอนสอบ 499
+      axios.put(this.apiLink+"/"+"getAnimalName"+"/"+data.animalId, data).then(
+      // axios.put("http://localhost:4000/getAnimalName/"+data.animalId, data).then(
         console.log("post complete"),
         console.log(data),
-        console.log("1111"),
-        //   this.$router.push({
-        //   name: "description",
-        //   params: { animalID: this.id, list:data},
-        // })
         this.$router.replace("/modify-data")
       );
     },
     async putAPI(data) {
-      // Real IP DB         : "http://202.28.24.50:3000/animal/update-tag" --- อันนี้ฝั่งสัตวแพทย์ปิดเซฟอยู่
-      // P pond DB On Local : "http://localhost:3000/animal/update-tag"  --- ใช้อันนี้ทดสอบไปก่อน
-      // My DB              : "http://localhost:4000/getAnimalName/"+data.animalId --อันนี้ที่ทำเอง
-      // http://192.168.1.106:4000 ==>  current use
-      axios.put("http://localhost:4000/getAnimalName/"+data.animalId, data).then(
+      axios.put(this.apiLink+"/"+"getAnimalName"+"/"+data.animalId, data).then(
+      // axios.put("http://localhost:4000/getAnimalName/"+data.animalId, data).then(
         console.log("put complete"),
         console.log(data),
-        console.log("2222"),
-        //   this.$router.push({
-        //   name: "description",
-        //   params: { animalID: this.id, Data:data},
-        // })
         this.$router.replace("/modify-data")
       );
     },
   },
   data: () => {
     return {
+      // Real IP DB         : "http://202.28.24.50:3000/animal/update-tag" --- อันนี้ฝั่งสัตวแพทย์ปิดเซฟอยู่
+      // P pond DB On Local : "http://localhost:3000/animal/update-tag"  --- ใช้อันนี้ทดสอบไปก่อน
+      // My DB              : "http://localhost:4000/getAnimalName/"+data.animalId --อันนี้ที่ทำเอง
+      // http://192.168.1.106:4000 ==>  current use
+      apiLink:"",
       id: null,
       apiCall: null,
       firstPut: [],
@@ -1340,18 +1323,9 @@ export default {
         .sort(compare);
     },
   },
-  mounted() {
-    // this.loadTag()
-    // console.log(this.ben)
-  },
-  beforeCreate() {
-    // console.log("beforeCreate function run!")
-    // console.log(this.loadStart)
-  },
   created() {
     //fetch data from api here
-    // this.ben="546355";
-    
+    this.apiLink ="http://192.168.1.106:4000";
     this.dataGet = [
       {
         _id: "604c6037cfc890051804f6d8",
@@ -1475,26 +1449,12 @@ export default {
     /*
 
     axios
-      //http://202.28.24.50:3000/
-      //http://localhost:3000/animal/bone/web/
-      // "http://192.168.1.106:4000/getAnimalName/" + this.id ==> current use
-
-
-      
-      // Real IP DB         : "http://202.28.24.50:3000/animal/bone/web/" --- อันนี้ฝั่งสัตวแพทย์ปิดเซฟอยู่
-      // P pond DB On Local : "http://localhost:3000/animal/bone/web/"  --- ใช้อันนี้ทดสอบไปก่อน
-      // My DB              : "http://localhost:4000/getAnimalName/" --อันนี้ที่ทำเอง
       .get("http://localhost:4000/getAnimalName/" + this.id)
       .then((Response) => {
         this.animaldata = Response.data;
-        // console.log("current get is")
-        // console.log(this.animaldata)
         this.imgLoadList = this.animaldata.animal.completeImageLink;
         this.imgLength = this.animaldata.animal.completeImageLink.length;
-        // this.dataGet[0].animal.completeImageLink
         this.initData();
-        // console.log("current dataget is")
-        // console.log(this.dataGet)
       });
     // axios.get("http://localhost:3000/animal/get-all-animal-name").then(Response => this.animalGet = Response.data)
 

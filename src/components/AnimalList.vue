@@ -66,6 +66,13 @@ export default {
   props: {},
   data: () => {
     return {
+      //http://202.28.24.50:3000/
+      //http://localhost:3000/animal/bone/web/
+
+      // Real IP DB         : "http://202.28.24.50:3000/animal/bone/web/" --- อันนี้ฝั่งสัตวแพทย์ปิดเซฟอยู่
+      // P pond DB On Local : "http://localhost:3000/animal/bone/web/"  --- ใช้อันนี้ทดสอบไปก่อน
+      // My DB              : "http://localhost:4000/getAnimalName/" --อันนี้ที่ทำเอง
+      apiLink:"",
       searchInput: "",
       newline: "\n",
       delList:[{
@@ -125,19 +132,8 @@ export default {
         }// end out for
 
         //call put api here
-
-        //http://202.28.24.50:3000/
-        // Real IP DB         : "http://202.28.24.50:3000/animal/update-tag" --- อันนี้ฝั่งสัตวแพทย์ปิดเซฟอยู่
-        // P pond DB On Local : "http://localhost:3000/animal/update-tag"  --- ใช้อันนี้ทดสอบไปก่อน
-        // My DB              : "http://localhost:4000/getAnimalName/" --อันนี้ที่ทำเอง
-        //192.168.1.106
-
-        // axios.put("http://202.28.24.50:3000/animal/update-tag",this.delList[0]).then(window.alert("Delete Complete!"))
-        // console.log("animalId : "+this.delList[0].animalId);
-        // console.log("boneId : "+this.delList[0].boneId);
-
-        axios.put("http://192.168.1.106:4000/getAnimalName/"+this.delList[0].animalId,this.delList[0]).then(window.alert("Delete Complete!"))
-        // axios.put("http://localhost:4000/getAnimalName/"+this.delList[0].animalId,this.delList[0]).then(window.alert("Delete Complete!"))
+        // axios.put("http://192.168.1.106:4000/getAnimalName/"+this.delList[0].animalId,this.delList[0]).then(window.alert("Delete Complete!"))
+        axios.put(this.apiLink+"/"+"getAnimalName"+"/"+this.delList[0].animalId,this.delList[0]).then(window.alert("Delete Complete!"))
       }
       else{
         console.log("Nothing to delete")
@@ -148,21 +144,14 @@ export default {
     },
     async getToDel(id){
       let _this = this
-      //http://202.28.24.50:3000/
-      //http://localhost:3000/animal/bone/web/
-
-      // Real IP DB         : "http://202.28.24.50:3000/animal/bone/web/" --- อันนี้ฝั่งสัตวแพทย์ปิดเซฟอยู่
-      // P pond DB On Local : "http://localhost:3000/animal/bone/web/"  --- ใช้อันนี้ทดสอบไปก่อน
-      // My DB              : "http://localhost:4000/getAnimalName/" --อันนี้ที่ทำเอง
-      axios.get("http://192.168.1.106:4000/getAnimalName/"+id).then(Response => {
+      // axios.get("http://192.168.1.106:4000/getAnimalName/"+id).then(Response => {
+      axios.get(this.apiLink+"/"+"getAnimalName"+"/"+id).then(Response => {
         // console.log("this response is ")
         // console.log(Response.data)
         // this.delList = Response.data
+        // console.log("api can use!!")
         _this.deleteTrack(Response.data)
         })
-      // axios.get("http://localhost:4000/getAnimalName/"+id).then(Response => {
-      //   _this.deleteTrack(Response.data)
-      //   })
     },
     goToPage(englishName, _id) {
       console.log("U click");
@@ -170,15 +159,8 @@ export default {
       _this.get(_id, englishName)
     },
     async get(_id, englishName){
-      //http://202.28.24.50:3000/
-      //http://localhost:3000/animal/bone/web/
-      //192.168.1.106
-
-      // Real IP DB         : "http://202.28.24.50:3000/animal/bone/web/" --- อันนี้ฝั่งสัตวแพทย์ปิดเซฟอยู่
-      // P pond DB On Local : "http://localhost:3000/animal/bone/web/"  --- ใช้อันนี้ทดสอบไปก่อน
-      // My DB              : "http://localhost:4000/getAnimalName/" --อันนี้ที่ทำเอง
-      var get = await axios.get("http://192.168.1.106:4000/getAnimalName/"+_id).then(Response => Response.data)
-      // var get = await axios.get("http://localhost:4000/getAnimalName/"+_id).then(Response => Response.data)
+      // var get = await axios.get("http://192.168.1.106:4000/getAnimalName/"+_id).then(Response => Response.data)
+      var get = await axios.get(this.apiLink+"/"+"getAnimalName"+"/"+_id).then(Response => Response.data)
       this.aaa = await get
       console.log("get is ")
       console.log(await get)
@@ -247,22 +229,13 @@ export default {
     }
   },
   created(){
-    //http://202.28.24.50:3000/
-    //http://localhost:3000/animal/get-all-animal-name
-
-    // Real IP DB         : "http://202.28.24.50:3000/animal/get-all-animal-name" --- อันนี้ฝั่งสัตวแพทย์ปิดเซฟอยู่
-    // P pond DB On Local : "http://localhost:3000/animal/get-all-animal-name"  --- ใช้อันนี้ทดสอบไปก่อน
-    // My DB              : "http://localhost:4000/getAnimalName" --อันนี้ที่ทำเอง
-    // axios.get("http://localhost:4000/getAnimalName").then(Response => {
-    //   this.animalGet = Response.data
-    //   console.log(this.animalGet)
-    //   })
-
-
+    this.apiLink = "http://192.168.1.106:4000";
       // http://192.168.1.106:4000/getAnimalName
-      axios.get("http://192.168.1.106:4000/getAnimalName").then(Response => {
+      axios.get(this.apiLink+"/"+"getAnimalName").then(Response => {
+      // axios.get("http://192.168.1.106:4000/getAnimalName").then(Response => {
       this.animalGet = Response.data
-      console.log(this.animalGet)
+      // console.log(this.apiLink)
+      // console.log(this.animalGet)
       })
   }
 };
