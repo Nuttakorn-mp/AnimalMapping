@@ -1,24 +1,15 @@
 <template>
   <div>
-    <!-- ------------------------------------------------------------------------------------------------------------------------- -->
     <div class="blank">
-      <!-- <button class="test" style="left: 80px; top: -5px ">1111</button> -->
       <p class="header-name" style="left: 80px; top: -5px">
         <img src="../assets/original.png" style="width: 269px" />
       </p>
-      <!-- <p class="header-name">Add Data</p> -->
       <p class="animal-name">{{ $route.params.animalName }}</p>
-      <!-- <p>{{$route.params.animalID}}</p> -->
       <p class="data-map-header">Data Mapping</p>
       <div class="main-box" id="main-box">
         <div id="click-box" class="click-box">
           <div class="img-box">
-            <!-- <p> {{imgSrc(this.$data.indexImg)}}</p> -->
-            <!-- "${{this.$data.imageList[this.$data.indexImg]}}" -->
-
-            <!-- <img :src="imgSrc(this.$data.indexImg)" class="pic-size" /> -->
             <img :src="imgLoad()" class="pic-size" />
-            <!-- <img src="../assets/tiger/resize.jpg" class="pic-size"> -->
           </div>
         </div>
         <div
@@ -32,7 +23,6 @@
       </div>
       <div class="data-box">
         <span class="search-in-box">search</span>
-        <!-- <input type="text" v-model="search" placeholder="Search title.."/> -->
         <input
           type="text"
           v-model="search"
@@ -40,19 +30,8 @@
           placeholder="Search title.."
         />
 
-        <!-- <div class="data-in-box">
-          <h3>Drag</h3>
-          <div
-            class="test-drag"
-            v-for="item in createList"
-            :key="item.title"
-            draggable
-            @dragstart="startDrag($event, item)"
-          >
-            {{ item.title}}
-          </div> -->
+
         <div class="data-in-box">
-          <!-- <h3>Drag</h3> -->
           <div
             class="data-drag"
             v-for="item in filteredAndSorted"
@@ -62,37 +41,11 @@
           >
             {{ item.title }}
           </div>
-          <!-- <h3>Can Drag1</h3>
-          <div>
-            <draggable class="list-group" :list="list1" group="people">
-              <div
-                class="list-group-item"
-                v-for="element in list1"
-                :key="element.name"
-              >
-                {{ element.name }}
-              </div>
-            </draggable>
-          </div>
-          <h3>Draggable 2</h3>
-          <div>
-            <draggable class="list-group" :list="list2" group="people">
-              <div
-                class="list-group-item"
-                v-for="element in list2"
-                :key="element.name"
-              >
-                {{ element.name }}
-              </div>
-            </draggable>
-          </div> -->
         </div>
       </div>
       <div class="showNumberOfImage">
-        <!-- {{ this.indexImg + 1 }}/{{ this.imageList.length }} -->
         {{ this.indexImg + 1 }}/{{ this.imgLength }}
       </div>
-      <!-- <textarea class="description" placeholder="Add Description Here" v-model="description.descriptionMain"></textarea> -->
       <button class="save" @click="save()">Save</button>
       <button class="discard" @click="discard()">Discard</button>
     </div>
@@ -140,29 +93,7 @@ export default {
       // console.log("a.left = " + a.left);
       // console.log("a.top = " + a.top);
       return { x: x - a.left - scrollX, y: y - a.top - scrollY };
-      // this.$data.posAndBox.push({x:((x - a.left-scrollX)),y:((y - a.top-scrollY)-20),map:''})
-      //เก็บก่อน จะเทสสร้างboj
-
-      // const app = new Vue({
-      // template:
-      // `<div>
-      //   {{message}}
-      // </div>`,
-      // data:{
-      //   message: 'AAA',
-      // }
-      //   template:
-      //   `<div class="drag-box">hope</div>`,
-      //   })
-      // const stat = document.getElementById('boxT');
-      // let vueContainer = document.createElement('div')
-      // stat.appendChild(vueContainer);
-      // app.$mount(vueContainer);
-
-      // return this.$data.x
-      // return [this.$data.x,this.$data.y]
     },
-    // <p style="margin-bottom: 0px;margin-top: 0px;">Draggable 0</p>
     addDragBox(event, titleDefault = "drop data here") {
       // var idCheckDup = `${event.x}${Math.ceil(event.y)}P${this.indexImg}`;
       // if (document.getElementById(idCheckDup) == null) {
@@ -208,13 +139,13 @@ export default {
         }
 
         // console.log(this.addList.length)
-        console.log("check dup");
+        // console.log("check dup");
         for (let i = 0; i < this.addList.length; i++) {
           // console.log(this.addList[i]);
           // console.log(this.addList.length);
           if (document.getElementById(this.addList[i].id)!=null) {
             if(Math.abs(this.addList[i].y - event.y) < 71 && Math.abs(this.addList[i].x - event.x) < 10){ // ตรง71 คือ รัศมีรอบๆจุดที่กด
-              console.log("<");
+              // console.log("<");
               if (this.addList[i].y> event.y) {yCal = yCal-(25);}
               else{yCal = yCal+(25);}
             }
@@ -322,14 +253,14 @@ export default {
 
         // const stat = document.getElementById("box2");
         const stat = document.getElementById("click-box");
-        console.log("stat :");
-        console.log(stat);
+        // console.log("stat :");
+        // console.log(stat);
         let vueContainer = document.createElement("span");
         stat.appendChild(vueContainer);
         app.$mount(vueContainer);
 
         /**************************************************************************/
-        // this.$nextTick(console.log("nextTick2 is run "));
+
         this.addList.push({
           id: `${event.x}${Math.ceil(event.y)}${this.indexImg}`,
           x: event.x,
@@ -429,10 +360,6 @@ export default {
           }
         } // end IF
       } // end Loop
-      // this.$router.replace("/modify-data");
-      // console.log("create list is")
-      // console.log(this.createJson);
-      // console.log("can u see me?");
 
       //------------------------------------------------------------------------------------
       if (
@@ -442,8 +369,8 @@ export default {
         console.log("start post");
 
         //check data ที่ get มา ว่าเคย Tag รึยัง? (dataGet is null)
-        // 1. ถ้ายังให้ใช้คำสั่งตั้งแต่บรรทัดที่      ถึง
-        // 2. ถ้าเคยแล้วให้ใช้คำสั่งตั้งแต่บรรทัดที่  ถึง
+        // 1. ถ้ายังให้ใช้คำสั่งตั้งแต่บรรทัดที่      374 ถึง 411
+        // 2. ถ้าเคยแล้วให้ใช้คำสั่งตั้งแต่บรรทัดที่  414 ถึง 500
         this.postList.push({
           animalId: this.dataGet[0].animal._id,
           boneId: this.dataGet[0].bone._id,
@@ -475,75 +402,37 @@ export default {
           this.postList[0].data[pic].imageName =
             this.dataGet[0].animal.completeImagePath[pic];
         }
-        console.log("post is ");
-        console.log(this.postList[0]);
+        // console.log("post is ");
+        // console.log(this.postList[0]);
+        console.log("----------------------");
+        console.log(" ")
+        console.log("POST...")
         // console.log(this.dataGet[0])
 
         // call API POST //
         //------------------------------------------------------------------------------------
         _this.postAPI(this.postList[0]);
-
+        console.log(" ")
         //------------------------------------------------------------------------------------
-      } else {
-        //กรณีข้อมูลที่ get มาจาก API เคย Tag แล้ว (dataGet != null OR dataGet.length > 0)
+      } else {//กรณีข้อมูลที่ get มาจาก API เคย Tag แล้ว (dataGet != null OR dataGet.length > 0)
         this.putList = [];
-        // if (this.firstPut.length > this.createJson.length) {
-        //จน ข้อมูลเก่า > ข้อมูลใหม่ แปลว่ามีการลบออก
-        // for (let i = 0; i < this.dataGet.length; i++) {
-        // const element = array[i];
-        // }
-
-        // console.log("case 1");
-
-        // for (let i = 0; i < this.dataGet[0].data.length; i++) {
-        //     // console.log("i is "+i)
-        //     // console.log("data[i] length is "+this.dataGet[0].data[i].coordinator.length)
-        //     // Object.keys(this.dataGet[0].data[i]).length  นับ length ใน obj
-        //     for (let j = 0; j < this.dataGet[0].data[i].coordinator.length; j++) {
-        //       // console.log("j is "+ j)
-        //       var idIndataGet =
-        //         this.dataGet[0].data[i].coordinator[j].lineStartX +
-        //         this.dataGet[0].data[i].coordinator[j].lineStartY + "P"+i;
-        //       // console.log("id is "+idIndataGet)
-        //       var checkIndataGet = document.getElementById(idIndataGet);
-        //       // console.log("check by id is "+ checkIndataGet)
-        //       if (checkIndataGet !== null) {
-        //         console.log("flag change!")
-        //         // console.log(this.dataGet[0].data[i].coordinator[j])
-        //         this.dataGet[0].data[i].coordinator[j].flag = 2;
-        //         this.dataGet[0].data[i].coordinator[j].title =
-        //           checkIndataGet.__vue__.createList[0].title;
-        //       } else {
-        //         console.log("flag remove!")
-        //         // console.log(this.dataGet[0].data[i].coordinator[j])
-        //         this.dataGet[0].data[i].coordinator[j].flag = 3;
-        //       }
-        //     }
-        //     console.log("case 2 : checked!")
-
-        //   }
-
-        // }
-
-        // else {
-        // if (this.firstPut.length <= this.createJson.length) {
-        //จน ข้อมูลเก่า <= ข้อมูลใหม่
         console.log("start case 2!");
-        console.log("dataGet have pic tag is "+this.dataGet[0].data.length)
+        // console.log("dataGet have pic in tag is "+this.dataGet[0].data.length)
         // console.log("but "+this.dataGet.length)
         for (let i = 0; i < this.dataGet[0].data.length; i++) {
           console.log("i is "+i)
-          console.log(this.dataGet[0].data[i])
-          console.log("dataGet.data[i].coordinator.length")
-          console.log(this.dataGet[0].data[i].coordinator.length)
-          console.log(this.dataGet[0].data[i].coordinator)
-          console.log(Object.keys(this.dataGet[0].data[i].coordinator).length)
+          // console.log(this.dataGet[0].data[i])
+          // console.log("dataGet.data[i].coordinator.length")
+          // console.log(this.dataGet[0].data[i].coordinator.length)
+          // console.log(this.dataGet[0].data[i].coordinator)
+          // console.log(Object.keys(this.dataGet[0].data[i].coordinator).length)
+          console.log(" ")
 
           // console.log("data[i] length is "+this.dataGet[0].data[i].coordinator.length)
           // Object.keys(this.dataGet[0].data[i]).length  นับ length ใน obj
           for (let j = 0; j < this.dataGet[0].data[i].coordinator.length; j++) {
-            console.log("i is "+i)
-            console.log("j is "+ j)
+            console.log("   i is "+i)
+            console.log("   j is "+ j)
 
             //`${event.x}${Math.ceil(event.y)}${this.indexImg}`
             // console.log(this.dataGet[0].data[i].coordinator[j])
@@ -555,49 +444,36 @@ export default {
             var checkIndataGet = document.getElementById(idIndataGet);
             // console.log("check by id is "+ checkIndataGet)
             if (checkIndataGet !== null) {
-              console.log("flag change!");
+              console.log("   flag change!");
               // console.log(this.dataGet[0].data[i].coordinator[j])
               this.dataGet[0].data[i].coordinator[j].flag = 2;
               this.dataGet[0].data[i].coordinator[j].title =
                 checkIndataGet.__vue__.createList[0].title;
-              console.log("result is :");
-              console.log(this.dataGet[0].data[i].coordinator[j]);
+              // console.log("result is :");
+              // console.log(this.dataGet[0].data[i].coordinator[j]);
+              console.log(" ")
 
 
             } 
             else {
-              console.log("flag remove!");
+              console.log("   flag remove!");
               // console.log(this.dataGet[0].data[i].coordinator[j])
               this.dataGet[0].data[i].coordinator[j].flag = 3;
             }
           } 
         }
         console.log("case 2 : data&flag checked!");
-        console.log(this.dataGet[0].data)
-
-
-
-
+        // console.log(this.dataGet[0].data)
 
         // เอา ใหม่(ที่มากกว่า) - เก่า(ที่น้อยกว่า)
-        // this.diff = this.createJson.filter(
-        //   x => this.firstPut.includes(x)
-        // );
+        /* เช็คว่ามีเพิ่ม tag อันใหม่มั๊ย
+        ถ้ามี diff จะลบแล้วได้ array ของอันใหม่
+        ถ้าไม่มี diff จะเป็น array เปล่า */
         this.diff = this.createJson.filter(this.comparer(this.firstPut));
-        //.filter(x => !arr2.includes(x))
-        // this.diff=[]
-        // console.log("after update flag is ")
-        // console.log(this.dataGet[0])
-        // console.log("create is "+ this.createJson.length)
-        // console.log(this.createJson)
-        // console.log("firstPut is " + this.firstPut.length)
-        // console.log(this.firstPut)
-        // console.log("diff is " + this.diff.length)
+        // console.log("diff is ")
         // console.log(this.diff)
 
-        // console.log("start Add After update!")
-        // console.log(this.dataGet[0])
-        // console.log("diff.length is "+this.diff.length)
+        //ถ้า diff ไม่ใช่ array เปล่า ==> จะทำการเพิ่ม tag
         for (let i = 0; i < this.diff.length; i++) {
           var picIndiff = this.diff[i].pic;
           // console.log("pic in diff is "+picIndiff)
@@ -675,23 +551,18 @@ export default {
           // this.putList[0].data[i].imageURL = this.dataGet[0].animal.completeImageLink[i]
         }
 
-        // }
-
-        // else {
-        //   //จน ข้อมูลใหม่ = เก่า
-        //   console.log("case 3");
-        //   // this.dataGet.length = this.createJson.length
-        //   //
-        // }
-        console.log("----- array dataGet update (prepare Put) -----");
-        console.log(this.dataGet[0]);
-        console.log("putList is");
-        console.log(this.putList[0]); //ยังไม่ได้ช้อมูลที่ว่าลบข้อมูลตัวไหนออก flag
+        // console.log("----- array dataGet update (prepare Put) -----");
+        // console.log(this.dataGet[0]);
+        // console.log("putList is");
+        // console.log(this.putList[0]);
         // console.log(this.createJson[0].pic)
         console.log("----------------------");
+        console.log(" ")
+        console.log("PUT...")
+
         //call API PUT
         _this.putAPI(this.putList[0]);
-        console.log();
+        console.log(" ");
       }
       window.alert("Complete!");
     },
@@ -737,10 +608,6 @@ export default {
       this.exampleList.push({ id: item.id, title: itemTitle });
       // console.log(itemTitle)
     },
-    imgSrc(event) {// not use(this first veresion)
-      
-      return require("../assets/tiger/" + this.$data.imageList[event] + ".jpg");
-    },
     imgLoad() {
       // console.log("this.$data.indexImg :"+this.$data.indexImg)
       // console.log('img load is run')
@@ -753,8 +620,8 @@ export default {
       this.$data.indexImg = (this.$data.indexImg + 1) % this.imgLength; //17; //เดี๋ยวรอนับจนรูปแล้วเอามา mod
       // console.log("value index is " + this.$data.indexImg);
       if(this.animalName =="Arapaima"){
-        console.log("name : ",this.animalName)
-        console.log("set milisecond")
+        // console.log("name : ",this.animalName)
+        // console.log("set milisecond")
         this.millisecond = 100;
       }
       else{
@@ -784,17 +651,7 @@ export default {
       }
 
       }, this.millisecond);
-      /*
-      for (let i = 0; i < this.addList.length; i++) {
-        const element = this.addList[i];
-        // console.log(element.id)
-        // console.log(document.getElementById(element.id).__vue__.createList[0])
-        this.addList[i].name = document.getElementById(
-          element.id
-        ).__vue__.createList[0].title;
-        // document.getElementById(element.id).__vue__.show=false
-      }
-      console.log(this.addList);*/
+      
     },
     prevImg() {
       if (this.$data.indexImg == 0) {
@@ -804,8 +661,8 @@ export default {
       }
       // console.log("value index is " + this.$data.indexImg);
       if(this.animalName =="Arapaima"){
-        console.log("name : ",this.animalName)
-        console.log("set milisecond")
+        // console.log("name : ",this.animalName)
+        // console.log("set milisecond")
         this.millisecond = 100;
       }
       else{
@@ -838,49 +695,6 @@ export default {
       }, this.millisecond);
       // console.log("value index is " + this.$data.indexImg);
 
-      // for (let i = 0; i < this.addList.length; i++) {
-      //   const element = this.addList[i];
-      //   // console.log(element.id)
-      //   // console.log(document.getElementById(element.id).__vue__.createList[0])
-      //   this.addList[i].name=document.getElementById(element.id).__vue__.createList[0].title
-      // }
-      // console.log(this.addList)
-    },
-    defaultDraw(event) {
-      var a = document.getElementById("c").getBoundingClientRect();
-      // var scrollX =
-      //   document.documentElement.scrollLeft || document.body.scrollLeft;
-      // var scrollY =
-      //   document.documentElement.scrollTop || document.body.scrollTop;
-
-      var c = document.getElementById("c");
-      var ctx = c.getContext("2d");
-      ctx.beginPath();
-
-      var sumX = event.x - Math.ceil(a.left);
-      // console.log("x is :"+event.x)
-      // console.log("a.left is :"+Math.ceil(a.left))
-      // console.log("sub is :"+sumX)
-
-      console.log();
-      var sumY = event.y - Math.ceil(a.top);
-      // var x = a.top - scrollX;
-      // var y = a.left - scrollY;
-
-      // ctx.rect(20, 20, 150, 100);
-      // ctx.stroke();
-      ctx.strokeStyle = "white";
-      ctx.lineWidth = 1;
-      ctx.moveTo(sumX / 2.67, sumY / 3);
-
-      // ctx.lineTo(sumX/2.67,10);
-      // ctx.lineTo(10, sumY/3);
-
-      ctx.lineTo(sumX / 2.67 + 25, sumY / 3 - 10);
-      ctx.closePath();
-      ctx.stroke();
-      this.vueCanvas = ctx;
-      // console.log(this.addList)
     },
     drawLine(xCal,yCal) {
       // console.log(xCal);
@@ -1023,18 +837,14 @@ export default {
         //วนตาม จน รูป
         for (let j = 0; j < this.dataGet[0].data[i].coordinator.length; j++) {
           //วนตาม จน tag
-          console.log("i is "+i)
-          console.log("j is "+j)
-          console.log(this.dataGet[0].data[i].coordinator[j])
+          // console.log("i is "+i)
+          // console.log("j is "+j)
+          // console.log(this.dataGet[0].data[i].coordinator[j])
 
-          // var load={x:this.dataGet[0].data[i].coordinator[j].lineStartX, y:this.dataGet[0].data[i].coordinator[j].lineStartY}
-          // this.x=load.x
-          // this.y=load.y
-
-          console.log("imageName is ")
-          console.log(this.dataGet[0].data[i].imageName)
-          console.log("index of ")
-          console.log(this.dataGet[0].animal.completeImagePath.indexOf(this.dataGet[0].data[i].imageName))
+          // console.log("imageName is ")
+          // console.log(this.dataGet[0].data[i].imageName)
+          // console.log("index of ")
+          // console.log(this.dataGet[0].animal.completeImagePath.indexOf(this.dataGet[0].data[i].imageName))
           this.firstPut.push({
             pic: this.dataGet[0].animal.completeImagePath.indexOf(this.dataGet[0].data[i].imageName), 
             //`${event.x}${Math.ceil(event.y)}${this.indexImg}`
@@ -1048,19 +858,11 @@ export default {
             lineToX: this.dataGet[0].data[i].coordinator[j].lineToX,
             lineToY: this.dataGet[0].data[i].coordinator[j].lineToY,
           });
-          //  pic: element.pic,
-          //   id: id,
-          //   title: title,
-          //   positionX: trackPosition.x,
-          //   positionY: trackPosition.y,
-          //   lineStartX: start.x,
-          //   lineStartY: start.y,
-          //   lineToX: to.x,
-          //   LineToY: to.y,
+          
         }
       }
-      console.log("firstput")
-      console.log(this.firstPut)
+      // console.log("firstput")
+      // console.log(this.firstPut)
       // console.log(this.firstPut.length)
       for (let k = 0; k < this.firstPut.length; k++) {
         var load = {
@@ -1096,22 +898,6 @@ export default {
       // console.log("load tag firstput is")
       // console.log(this.firstPut)
 
-      // for (let i = 0; i < this.dataGet[0].data[this.indexImg].coordinator.length; i++) {
-      //   var load={x:this.dataGet[0].data[this.indexImg].coordinator[i].lineStartX, y:this.dataGet[0].data[this.indexImg].coordinator[i].lineStartY}
-      //   this.x=load.x
-      //   this.y=load.y
-      //   _this.addDragBox(load, this.dataGet[0].data[this.indexImg].coordinator[i].title)
-      //   _this.drawLine()
-
-      //   this.addList.push({
-      //   id: load.x + Math.ceil(load.y),
-      //   x: load.x,
-      //   y: load.y,
-      //   name: this.dataGet[0].data[this.indexImg].coordinator[i].title,
-      //   pic: this.indexImg,
-      // });
-
-      // }
     },
     initData() {
       let _this = this;
@@ -1203,18 +989,18 @@ export default {
       };
     },
     async postAPI(data) {
-      axios.put(this.apiLink+"/"+"getAnimalName"+"/"+data.animalId, data).then(
+      axios.put(this.apiLink+this.apiCommand_GetAllAnimalName+"/"+data.animalId, data).then(
       // axios.put("http://localhost:4000/getAnimalName/"+data.animalId, data).then(
         console.log("post complete"),
-        console.log(data),
+        // console.log(data),
         this.$router.replace("/modify-data")
       );
     },
     async putAPI(data) {
-      axios.put(this.apiLink+"/"+"getAnimalName"+"/"+data.animalId, data).then(
+      axios.put(this.apiLink+this.apiCommand_GetAllAnimalName+"/"+data.animalId, data).then(
       // axios.put("http://localhost:4000/getAnimalName/"+data.animalId, data).then(
         console.log("put complete"),
-        console.log(data),
+        // console.log(data),
         this.$router.replace("/modify-data")
       );
     },
@@ -1226,11 +1012,12 @@ export default {
       // My DB              : "http://localhost:4000/getAnimalName/"+data.animalId --อันนี้ที่ทำเอง
       // http://192.168.1.106:4000 ==>  current use
       apiLink:"",
+      apiCommand_GetAllAnimalName:"",
+      apiCommand_PUT_AnimalData:"",
       id: null,
       apiCall: null,
       firstPut: [],
-      dataGet: null,
-      loadStart: 1,
+      dataGet: [],
       diff: null,
       picTagCount: -1,
       postList: [],
@@ -1251,60 +1038,17 @@ export default {
       showXY: false,
       x: 100,
       y: 200,
-      textColor: "blue",
-      bgColor: "black",
       height: 100,
       addList: [],
       filters: [],
       posAndBox: [{ id: 0, title: "Null", list: 0 }],
       exampleList: [{ id: 0, title: "exampleList", list: 0 }],
-      createList: [
-        //****************************
-        // { title: "Skull" },
-        // { title: "Tail" },
-        // { title: "Front Leg" },
-        // { title: "test" },
-      ],
+      createList: [],
       indexImg: 0,
-      imageList: [
-        //****************************
-        // "001",
-        "reduce",
-        "002",
-        "003",
-        "004",
-        "005",
-        "006",
-        "007",
-        "008",
-        "009",
-        "010",
-        "011",
-        "012",
-        "013",
-        "014",
-        "015",
-        "016",
-        "017",
-      ],
       millisecond:0,
     };
   },
   computed: {
-    // animaldata : this.$route.params.animalData,
-    // cssVars() {
-    //   return {
-    //     "--bg-color": this.bgColor,
-    //     "--height": this.height + "px",
-    //     "--text-color": this.textColor,
-    //   };
-    // },
-    // boxh() {
-    //   return {
-    //     "--x": this.x + "px",
-    //     "--y": this.y + "px",
-    //   };
-    // },
     filteredAndSorted() {
       // function to compare names
       function compare(a, b) {
@@ -1324,119 +1068,10 @@ export default {
     },
   },
   created() {
-    //fetch data from api here
+    //config data here
     this.apiLink ="http://192.168.1.106:4000";
-    this.dataGet = [
-      {
-        _id: "604c6037cfc890051804f6d8",
-        animal: {
-          _id: "6048e482c9eb27085c2bd571",
-          completeImagePath: [
-            "img-1615392107089.jpg",
-            "img-1615392107092.png",
-            "img-1615392107096.png",
-          ],
-          partType: ["6048e55ec9eb27085c2bd572", "6048e57dc9eb27085c2bd573"],
-          thaiName: "สุนัขทดสอบ สอง",
-          englishName: "Dog Tesing 2",
-          scienceName: "Dog Tesing 2",
-          technicalTerm: "Dog Tesing 2",
-          description: "ทดสอบระบบ",
-          taxonomy: null,
-          animalTypeId: "6033be30149207022c774778",
-          partId: null,
-          __v: 0,
-          complete: true,
-          boneId: "6040e71c46fdea043720839f",
-        },
-        bone: {
-          _id: "6040e71c46fdea043720839f",
-          axial: {
-            vertebralColumn: {
-              cervicalVertebrae: true,
-              toracicVertebrae: true,
-              ribsCage: true,
-              sternum: true,
-              lumbarVertebrae: true,
-              sarcum: true,
-              coccygeal: false,
-            },
-            skull: true,
-            mandible: true,
-          },
-          appendicular: {
-            forelimb: {
-              scapular: true,
-              clavicle: false,
-              humerus: true,
-              radias: true,
-              ulnar: true,
-              carpus: true,
-              metacapus: true,
-              phalangs: true,
-              sesamoid: false,
-            },
-            hindlimb: {
-              pelvic: true,
-              femur: true,
-              patella: false,
-              fabella: false,
-              tibia: true,
-              fibular: true,
-              tarsus: true,
-              metatarsus: true,
-              phalangs: true,
-              sesamoid: false,
-            },
-          },
-          no: "1",
-          species: "Domestic Dog",
-          __v: 0,
-        },
-        data: [
-          {
-            imageURL: "http://localhost:3000/img/animals/img-1615392107089.jpg",
-            _id: "604cd2bf2b31791099ec827e",
-            imageName: "img-1615392107089.jpg",
-            coordinator: [
-              {
-                _id: "604c6037cfc890051804f6db",
-                title: "mandible",
-                positionX: 111,
-                positionY: 222,
-                lineStartX: 500,
-                lineStartY: 200,
-                lineToX: 555,
-                lineToY: 666,
-                description: "test position",
-                // flag:0,
-              },
-            ],
-          }, //end data tag 1
-          {
-            imageURL: "http://localhost:3000/img/animals/img-1615392107092.png",
-            _id: "604cd2bf2b31791099ec8282",
-            imageName: "img-1615392107092.png",
-            coordinator: [
-              {
-                _id: "604c6037cfc890051804f6dd",
-                title: "skull",
-                positionX: 111,
-                positionY: 222,
-                lineStartX: 500,
-                lineStartY: 100,
-                lineToX: 555,
-                lineToY: 666,
-                description: "test position",
-                // flag:0,
-              },
-            ],
-          }, //end data tag 2
-        ],
-        __v: 0,
-        platform: "Web",
-      },
-    ];
+    this.apiCommand_GetAllAnimalName = "/getAnimalName";
+    // this.apiCommand_PUT_AnimalData=
     this.id = this.$route.params.animalID;
     this.animalName = this.$route.params.animalName;
 
@@ -1446,23 +1081,6 @@ export default {
     this.imgLength = this.animaldata.animal.completeImageLink.length;
     this.initData();
 
-    /*
-
-    axios
-      .get("http://localhost:4000/getAnimalName/" + this.id)
-      .then((Response) => {
-        this.animaldata = Response.data;
-        this.imgLoadList = this.animaldata.animal.completeImageLink;
-        this.imgLength = this.animaldata.animal.completeImageLink.length;
-        this.initData();
-      });
-    // axios.get("http://localhost:3000/animal/get-all-animal-name").then(Response => this.animalGet = Response.data)
-
-    */
-
-
-
-    
   },
 };
 </script>

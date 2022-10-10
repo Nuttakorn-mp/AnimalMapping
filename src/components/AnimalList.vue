@@ -17,23 +17,22 @@
       <span class="table-header-name" style="left: 825px">complete Image</span> -->
       <span class="table-header-name" style="left: 1150px">Clear Tag</span>
       <div class="element-name">
-        <!-- <button class="view" @click="goToView()">View</button> -->
 
         <div class="result-search">
           <div v-for="item in filteredAndSorted" :key="item.englishName">
-            <!-- <router-link :to="{name:'add-data', params:{animalName:item.englishName, animalID:item._id} }" >
-              <span>{{item.englishName}}</span>
-              </router-link> -->
             <br />
 
             <span @click="goToPage(item.englishName, item._id)">{{
               item.englishName
             }}</span>
 
+            <!-- 29-32 ถ้ามี check status เปิดได้ -->
+
             <!-- <span v-if="item.bone == true" class="boneCheck">&#10003;</span>
             <span v-if="item.bone == false" class="boneCheck">&#10006;</span>
             <span v-if="item.completeImage == true" class="imgCheck">&#10003;</span>
             <span v-if="item.completeImage == false" class="imgCheck">&#10006;</span> -->
+
 
             <!-- <span v-if="item.englishName == 'Domestic Dog'">
             <span class="_id">{{ item._id }}</span></span> -->
@@ -73,20 +72,24 @@ export default {
       // P pond DB On Local : "http://localhost:3000/animal/bone/web/"  --- ใช้อันนี้ทดสอบไปก่อน
       // My DB              : "http://localhost:4000/getAnimalName/" --อันนี้ที่ทำเอง
       apiLink:"",
+      apiCommand_GetAllAnimalName:"",
+      apiCommand_PutAnimal:"",
       searchInput: "",
       newline: "\n",
+
+      //list สำหรับสร้างข้อมูลที่ต้องลบ (ใส่ frag =3)
       delList:[{
         // animalID : null,
         boneId : null,
         data: [],
       }
       ],
-      // animalNameGet: null,
-      animalGet: [],
-      aaa:[],
+      animalGet: [],//เอาไว้เรียงลำดับชื่อก่อนการแสดงผล
+      aaa:[],// เอาไว้เก็บข้อมูลชั่วคราวที่ดึงจาก API
     };
   },
   computed: {
+    //เรียงลำดับชื่อ และแสดงผล
     filteredAndSorted() {
       // function to compare names
       function compare(a, b) {
@@ -109,15 +112,9 @@ export default {
     
   },
   methods: {
-    goToView(){
-      this.$router.push({
-        name: "views",
-        // params: { animalID: this.id,},
-      });
-    },
+    //delete ข้อมูลจับคู่ที่เคยทำไว้ทั้งหมด
     deleteTrack(data) {
-      /* *****************************  delete track data here   *********************************** */
-      console.log("delete track call")
+      console.log("delete tag call")
       // console.log(data)
       console.log(data.data.length)
       if (data.data.length >0) {
@@ -127,43 +124,49 @@ export default {
         this.delList[0].data = data.data
         for (let i = 0; i < data.data.length; i++) {
           for (let j = 0; j < data.data[i].coordinator.length; j++) {
+            //this.delList[0].data[i].coordinator[j].flag = 3 //frag 3== delete, frag 2 == edit, frag 1== add
             this.delList[0].data[i].coordinator[j].flag = 3
           } // end nest for
         }// end out for
 
         //call put api here
+        console.log(this.delList[0])
         // axios.put("http://192.168.1.106:4000/getAnimalName/"+this.delList[0].animalId,this.delList[0]).then(window.alert("Delete Complete!"))
-        axios.put(this.apiLink+"/"+"getAnimalName"+"/"+this.delList[0].animalId,this.delList[0]).then(window.alert("Delete Complete!"))
+        axios.put(this.apiLink+this.apiCommand_GetAllAnimalName+"/"+this.delList[0].animalId,this.delList[0]).then(window.alert("Delete Complete!"))
       }
       else{
         console.log("Nothing to delete")
       }
-      
-
-      // window.alert("Delete Complete!");
     },
+
+    //ดึงข้อมูล animal ที่ต้องการลบข้อมูล จากนั้นเรียก deletetrack
     async getToDel(id){
       let _this = this
       // axios.get("http://192.168.1.106:4000/getAnimalName/"+id).then(Response => {
-      axios.get(this.apiLink+"/"+"getAnimalName"+"/"+id).then(Response => {
-        // console.log("this response is ")
-        // console.log(Response.data)
-        // this.delList = Response.data
-        // console.log("api can use!!")
+      axios.get(this.apiLink+this.apiCommand_GetAllAnimalName+"/"+id).then(Response => {
         _this.deleteTrack(Response.data)
         })
     },
+
+    //ส่งผู้ใช้ไปหน้าถัดไปโดยเรียก async get                 **เรียก async แบบตรงๆไม่ได้เลยต้องใช้ function ธรรมดาเรียกอีกชั้นนึง
     goToPage(englishName, _id) {
-      console.log("U click");
+      // console.log("U click");
       let _this= this
       _this.get(_id, englishName)
     },
+
+    
+    /* ดึงข้อมูล animal ที่ผู้ใช้คลิก จากนั้น
+    1. เช็ค bone
+    2. เช็ค completeImage
+    ถ้ามีทั้งคู่ ก็ผ่านไปหน้าถัดไป
+    ถ้าไม่มีก็แสดง alert window ว่าไม่มีและอยู่หน้าเดิม */
     async get(_id, englishName){
       // var get = await axios.get("http://192.168.1.106:4000/getAnimalName/"+_id).then(Response => Response.data)
-      var get = await axios.get(this.apiLink+"/"+"getAnimalName"+"/"+_id).then(Response => Response.data)
+      var get = await axios.get(this.apiLink+this.apiCommand_GetAllAnimalName+"/"+_id).then(Response => Response.data)
       this.aaa = await get
-      console.log("get is ")
-      console.log(await get)
+      // console.log("get is ")
+      // console.log(await get)
 
       try {
         var bone = await get.bone
@@ -185,12 +188,12 @@ export default {
       }
 
       
-      console.log("----------------")
-      console.log(bone)
-      console.log("bone length is "+boneL)
-      console.log(comImg)
-      console.log("completeImgPath is "+comImgL)
-      console.log("------------------")
+      // console.log("----------------")
+      // console.log(bone)
+      // console.log("bone length is "+boneL)
+      // console.log(comImg)
+      // console.log("completeImgPath is "+comImgL)
+      // console.log("------------------")
       // console.log(this.aaa)
 
 
@@ -225,13 +228,18 @@ export default {
       
       
 
-      console.log(this.aaa)
+      // console.log(this.aaa)
     }
   },
-  created(){
+  created(){//กำหนด apiLink และ apiCommand ตรงนี้
     this.apiLink = "http://192.168.1.106:4000";
+    this.apiCommand_GetAllAnimalName = "/getAnimalName";
+
+    // this.apiCommand_PutAnimal
+
+
       // http://192.168.1.106:4000/getAnimalName
-      axios.get(this.apiLink+"/"+"getAnimalName").then(Response => {
+      axios.get(this.apiLink+this.apiCommand_GetAllAnimalName).then(Response => {
       // axios.get("http://192.168.1.106:4000/getAnimalName").then(Response => {
       this.animalGet = Response.data
       // console.log(this.apiLink)
