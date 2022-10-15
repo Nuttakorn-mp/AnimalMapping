@@ -362,7 +362,7 @@ export default {
       } // end Loop
 
       //------------------------------------------------------------------------------------
-      if (
+      if (//post api wait integrate
         this.dataGet[0].data.length == 0 ||
         this.dataGet[0].data.length == null
       ) {
@@ -376,7 +376,7 @@ export default {
           boneId: this.dataGet[0].bone._id,
           data: [],
         });
-        for (let i = -1; i < this.picTagCount; i++) {
+        for (let i = -1; i < this.picTagCount; i++) {//เพิ่มรูปตามที่ tag
           this.postList[0].data.push({
             // id:__
             imageName: i + 1,
@@ -410,11 +410,12 @@ export default {
         // console.log(this.dataGet[0])
 
         // call API POST //
-        //------------------------------------------------------------------------------------
-        _this.postAPI(this.postList[0]);
+        // _this.postAPI(this.postList[0]);
         console.log(" ")
-        //------------------------------------------------------------------------------------
-      } else {//กรณีข้อมูลที่ get มาจาก API เคย Tag แล้ว (dataGet != null OR dataGet.length > 0)
+
+      } 
+      //put api integrate complete
+      else {//กรณีข้อมูลที่ get มาจาก API เคย Tag แล้ว (dataGet != null OR dataGet.length > 0)
         this.putList = [];
         console.log("start case 2!");
         // console.log("dataGet have pic in tag is "+this.dataGet[0].data.length)
@@ -519,7 +520,7 @@ export default {
 
             // console.log("add dataGet list")
           }
-          console.log(this.dataGet[0]);
+          // console.log(this.dataGet[0]);
           // else{
           this.dataGet[0].data[picIndiff].coordinator.push({
             title: this.diff[i].title,
@@ -553,8 +554,8 @@ export default {
 
         // console.log("----- array dataGet update (prepare Put) -----");
         // console.log(this.dataGet[0]);
-        // console.log("putList is");
-        // console.log(this.putList[0]);
+        console.log("putList is");
+        console.log(this.putList[0]);
         // console.log(this.createJson[0].pic)
         console.log("----------------------");
         console.log(" ")
@@ -899,16 +900,11 @@ export default {
       // console.log(this.firstPut)
 
     },
-    initData() {
+    initData_for_499() {
       let _this = this;
-      // console.log("---------")
-      // console.log("start map page")
-      // this.dataGet[0].data = this.animaldata.data
       this.dataGet[0] = this.animaldata;
-      // this.indexImg = 0;
       // console.log("-------------")
       // console.log(this.dataGet[0])
-      // _this.loadTag();
       setTimeout(()=>_this.loadTag(),200);
       // console.log("create map data");
 
@@ -952,6 +948,7 @@ export default {
         this.createList = [
           ...new Map(this.createList.map((item) => [item.title, item])).values(),
         ]; //[item.title, item]
+        console.log(this.createList)
     }
 
       else{
@@ -979,6 +976,12 @@ export default {
 
       // console.log(Object.values(this.dataGet[0].bone.axial).length)
     },
+    convert_data_structure_real_use_to_499_structure(_boneId){
+      // console.log(typeof this.animaldata)
+      this.animaldata.boneId = _boneId
+      console.log(this.animaldata)
+      console.log("######################################")
+    },
     comparer(otherArray) {
       return function (current) {
         return (
@@ -988,31 +991,53 @@ export default {
         );
       };
     },
-    async postAPI(data) {
-      axios.put(this.apiLink+this.apiCommand_GetAllAnimalName+"/"+data.animalId, data).then(
-      // axios.put("http://localhost:4000/getAnimalName/"+data.animalId, data).then(
-        console.log("post complete"),
-        // console.log(data),
-        this.$router.replace("/modify-data")
-      );
+    async postAPI(data) {//wait integrate
+      if(this.project499){//true ==> ใช้ api ของ 499
+        axios.put(this.apiLink+this.apiCommand_GetAllAnimalName+"/"+data.animalId, data).then(
+            console.log("post complete"),
+          // console.log(data),
+          this.$router.replace("/modify-data")
+        );
+      }
+      else{//false ==> ใช้ api ของสัตวแพทย์
+        axios.put(this.apiLink+this.apiCommand_POST_AnimalData, data).then(
+        // axios.put("http://localhost:4000/getAnimalName/"+data.animalId, data).then(
+          console.log("post complete"),
+          // console.log(data),
+          this.$router.replace("/modify-data")
+        );
+      }
+      
     },
-    async putAPI(data) {
-      axios.put(this.apiLink+this.apiCommand_GetAllAnimalName+"/"+data.animalId, data).then(
-      // axios.put("http://localhost:4000/getAnimalName/"+data.animalId, data).then(
-        console.log("put complete"),
-        // console.log(data),
-        this.$router.replace("/modify-data")
-      );
+    async putAPI(data) {// integrate complete
+      if(this.project499){//true ==> ใช้ api ของ 499
+        // axios.put(this.apiLink+this.apiCommand_GetAllAnimalName+"/"+data.animalId, data).then(
+        //   console.log("put complete"),
+        //   // console.log(data),
+        //   this.$router.replace("/modify-data")
+        // );
+      }
+      else{//false ==> ใช้ api ของสัตวแพทย์
+        axios.put(this.apiLink+this.apiCommand_PUT_AnimalData, data).then(
+          console.log("put complete"),
+          // console.log(data),
+          this.$router.replace("/modify-data")
+        );
+      }
+      
+      
     },
   },
   data: () => {
     return {
+      project499:false,
       // Real IP DB         : "http://202.28.24.50:3000/animal/update-tag" --- อันนี้ฝั่งสัตวแพทย์ปิดเซฟอยู่
       // P pond DB On Local : "http://localhost:3000/animal/update-tag"  --- ใช้อันนี้ทดสอบไปก่อน
       // My DB              : "http://localhost:4000/getAnimalName/"+data.animalId --อันนี้ที่ทำเอง
       // http://192.168.1.106:4000 ==>  current use
       apiLink:"",
       apiCommand_GetAllAnimalName:"",
+      apiCommand_POST_AnimalData:"",
       apiCommand_PUT_AnimalData:"",
       id: null,
       apiCall: null,
@@ -1068,19 +1093,52 @@ export default {
     },
   },
   created() {
-    //config data here
-    this.apiLink ="http://192.168.1.106:4000";
-    this.apiCommand_GetAllAnimalName = "/getAnimalName";
-    // this.apiCommand_PUT_AnimalData=
-    this.id = this.$route.params.animalID;
-    this.animalName = this.$route.params.animalName;
+    this.project499 = this.$route.params.project499;
+    console.log(this.project499)
+    if(this.project499){//true ==> ใช้ api ของ 499
+      /*
+      //config data here (499 project)
+      this.apiLink ="http://192.168.1.106:4000";
 
-    //เสริมล่าสุด
-    this.animaldata = this.$route.params.pullData;
-    this.imgLoadList = this.animaldata.animal.completeImageLink;
-    this.imgLength = this.animaldata.animal.completeImageLink.length;
-    this.initData();
+      this.apiCommand_GetAllAnimalName = "/getAnimalName";
+      // this.apiCommand_PUT_AnimalData="/animal/update-tag"
 
+      this.id = this.$route.params.animalID;
+      this.animalName = this.$route.params.animalName;
+
+      //เสริมล่าสุด
+      this.animaldata = this.$route.params.pullData;
+      this.imgLoadList = this.animaldata.animal.completeImageLink;
+      this.imgLength = this.animaldata.animal.completeImageLink.length;
+
+      this.initData_for_499();
+      */
+    }
+    else{//false ==> ใช้ api ของสัตวแพทย์
+      //config data here (real use)
+      this.apiLink ="http://localhost:3000"
+
+      this.apiCommand_POST_AnimalData="/animal/bone"
+      this.apiCommand_PUT_AnimalData="/animal/update-tag"
+
+      this.id = this.$route.params.animalID;
+      this.animalName = this.$route.params.animalName;
+
+      this.animaldata = this.$route.params.pullData;
+      this.imgLoadList = this.animaldata.animal.completeImageLink;
+      this.imgLength = this.animaldata.animal.completeImageLink.length;
+
+      // console.log(this.id)
+      // console.log(this.animalName)
+      // console.log(this.animaldata.animal.boneId)
+
+      this.convert_data_structure_real_use_to_499_structure(this.animaldata.animal.boneId);
+      this.initData_for_499();
+    }
+    
+
+
+    
   },
 };
 </script>

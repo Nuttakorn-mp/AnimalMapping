@@ -13,8 +13,8 @@
         </span>
       </div>
       <span class="table-header-name" style="left: 200px">Name</span>
-      <!-- <span class="table-header-name" style="left: 700px">Bone</span>
-      <span class="table-header-name" style="left: 825px">complete Image</span> -->
+      <span class="table-header-name" style="left: 700px">Bone</span>
+      <span class="table-header-name" style="left: 870px">Image</span>
       <span class="table-header-name" style="left: 1150px">Clear Tag</span>
       <div class="element-name">
 
@@ -26,12 +26,12 @@
               item.englishName
             }}</span>
 
-            <!-- 29-32 ถ้ามี check status เปิดได้ -->
+            <!-- 31-34 ถ้ามี check status เปิดได้ -->
 
-            <!-- <span v-if="item.bone == true" class="boneCheck">&#10003;</span>
+            <span v-if="item.bone == true" class="boneCheck">&#10003;</span>
             <span v-if="item.bone == false" class="boneCheck">&#10006;</span>
             <span v-if="item.completeImage == true" class="imgCheck">&#10003;</span>
-            <span v-if="item.completeImage == false" class="imgCheck">&#10006;</span> -->
+            <span v-if="item.completeImage == false" class="imgCheck">&#10006;</span>
 
 
             <!-- <span v-if="item.englishName == 'Domestic Dog'">
@@ -73,9 +73,12 @@ export default {
       // My DB              : "http://localhost:4000/getAnimalName/" --อันนี้ที่ทำเอง
       apiLink:"",
       apiCommand_GetAllAnimalName:"",
-      apiCommand_PutAnimal:"",
+      apicommand_GetAnimal_by_id:"",
+      apiCommand_GetBone:"",
+      apiCommand_PUT_AnimalData:"",
       searchInput: "",
       newline: "\n",
+      project499:false,
 
       //list สำหรับสร้างข้อมูลที่ต้องลบ (ใส่ frag =3)
       delList:[{
@@ -131,8 +134,18 @@ export default {
 
         //call put api here
         console.log(this.delList[0])
-        // axios.put("http://192.168.1.106:4000/getAnimalName/"+this.delList[0].animalId,this.delList[0]).then(window.alert("Delete Complete!"))
-        axios.put(this.apiLink+this.apiCommand_GetAllAnimalName+"/"+this.delList[0].animalId,this.delList[0]).then(window.alert("Delete Complete!"))
+
+        if(this.project499){//true ==> ใช้ api ของ 499
+          // axios.put(this.apiLink+this.apiCommand_GetAllAnimalName+"/"+this.delList[0].animalId,this.delList[0]).then(window.alert("Delete Complete!"))
+        }
+        else{//false ==> ใช้ api ของสัตวแพทย์
+          axios.put(this.apiLink+this.apiCommand_PUT_AnimalData,this.delList[0]).then(window.alert("Delete Complete!")) // for real use
+        }
+        
+        
+
+
+        
       }
       else{
         console.log("Nothing to delete")
@@ -142,8 +155,8 @@ export default {
     //ดึงข้อมูล animal ที่ต้องการลบข้อมูล จากนั้นเรียก deletetrack
     async getToDel(id){
       let _this = this
-      // axios.get("http://192.168.1.106:4000/getAnimalName/"+id).then(Response => {
-      axios.get(this.apiLink+this.apiCommand_GetAllAnimalName+"/"+id).then(Response => {
+      axios.get(this.apiLink+this.apicommand_GetAnimal_by_id+"/"+id).then(Response => {
+      // axios.get(this.apiLink+this.apiCommand_GetAllAnimalName+"/"+id).then(Response => {
         _this.deleteTrack(Response.data)
         })
     },
@@ -152,7 +165,8 @@ export default {
     goToPage(englishName, _id) {
       // console.log("U click");
       let _this= this
-      _this.get(_id, englishName)
+      _this.get_real_use(_id, englishName)
+      // _this.get_for_499(_id, englishName)
     },
 
     
@@ -161,81 +175,88 @@ export default {
     2. เช็ค completeImage
     ถ้ามีทั้งคู่ ก็ผ่านไปหน้าถัดไป
     ถ้าไม่มีก็แสดง alert window ว่าไม่มีและอยู่หน้าเดิม */
-    async get(_id, englishName){
+    async get_real_use(_id, englishName){
       // var get = await axios.get("http://192.168.1.106:4000/getAnimalName/"+_id).then(Response => Response.data)
-      var get = await axios.get(this.apiLink+this.apiCommand_GetAllAnimalName+"/"+_id).then(Response => Response.data)
+      console.log(this.apiLink+this.apicommand_GetAnimal_by_id+"/"+_id)
+
+      var get = await axios.get(this.apiLink+this.apicommand_GetAnimal_by_id+"/"+_id).then(Response => Response.data)
+
+      // for 499
+      // var bone = await axios.get(this.apiLink+this.apiCommand_GetBone+"/"+_id).then(Response => Response.data)
+
+
+      // console.log(bone)
       this.aaa = await get
       // console.log("get is ")
       // console.log(await get)
+      console.log("animalID : "+_id)
 
-      try {
-        var bone = await get.bone
-        var boneL = await Object.values(get.bone).length
+      try {//get boneId
+        // var bone = await get.bone
+        // var boneL = await Object.values(get.bone).length
+        // var boneId = null
+        var boneId = await get.animal.boneId
+        console.log("boneId : "+boneId)
         
-      } catch (error) {
-        console.log("don't have bone!")
-        // console.log(error)
-        window.alert("please insert bone data!");
+      } catch (error) {//get conplete_Image
+        console.log("boneId : "+boneId)
       }
 
       try {
         var comImg = await get.animal.completeImagePath
-        var comImgL = await get.animal.completeImagePath.length
+        var comImgL = await comImg.length
+
+        if(comImgL == 0){console.log("Image : No image")}
+        
       } catch (error) {
-        console.log("don't have completeImagePath!")
-        // console.log(error)
-        window.alert("please insert image data!");
+        console.log("Image : "+comImg)
       }
 
-      
-      // console.log("----------------")
-      // console.log(bone)
-      // console.log("bone length is "+boneL)
-      // console.log(comImg)
-      // console.log("completeImgPath is "+comImgL)
-      // console.log("------------------")
-      // console.log(this.aaa)
-
-
-
-      // this.aaa = await get
-      // console.log(await this.aaa._id)
-      // console.log(await this.aaa)
-
         if ( //มีข้อมูลกระดูก +มี complete image path
-          await bone &&
-          await boneL > 0 &&
-          await comImg &&
+          // await bone &&
+          // await boneL > 0 &&
+          await typeof boneId !== 'undefined' &&
+          // await comImg &&
+          await typeof comImg !== 'undefined' &&
           await comImgL > 0
         ) {
           console.log(englishName+" pass condition");
           // console.log(await get)
           // this.aaa = await get
+
           this.$router.push({
           name: "add-data",
-          params: { animalName: englishName, animalID: _id,pullData: get},
+          params: { animalName: englishName, animalID: _id,pullData: get,project499:this.project499},
         });
-        } else if ( //ไม่มีข้อมูลกระดูก
-          await bone &&
-          await boneL == 0
-        ) {
-          console.log("not found bone data!");
-        } else if(
-          await comImgL == 0
-          ){ //ไม่มี complete img path
-          console.log("not found completeImage data!");
+
         }
       
-      
 
-      // console.log(this.aaa)
+      console.log("\n")
     }
   },
   created(){//กำหนด apiLink และ apiCommand ตรงนี้
-    this.apiLink = "http://192.168.1.106:4000";
-    this.apiCommand_GetAllAnimalName = "/getAnimalName";
+    this.project499=false; //ถ้าใช้ api ของ499 ให้เปิดเป็น true
 
-    // this.apiCommand_PutAnimal
+    if(this.project499){//true ==> api 499
+      // this.apiLink = "http://192.168.1.106:4000";
+      // this.apiCommand_GetAllAnimalName = "/getAnimalName";
+      // this.apicommand_GetAnimal_by_id="/getAnimalName"
+      // this.apiCommand_GetBone="/getAnimalName/"
+      // this.apiCommand_PUT_AnimalData
+    }
+    else{//false ==> api สัตวแพทย์
+      this.apiLink ="http://localhost:3000"
+      this.apiCommand_GetAllAnimalName="/animal/get-all-animal-name"
+      this.apicommand_GetAnimal_by_id="/animal/bone/web"
+      this.apiCommand_GetBone="/bone"
+      this.apiCommand_PUT_AnimalData="/animal/update-tag"
+    }
+    
+
+
+    
+
 
 
       // http://192.168.1.106:4000/getAnimalName
