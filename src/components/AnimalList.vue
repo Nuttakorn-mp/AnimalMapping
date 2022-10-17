@@ -31,12 +31,10 @@
             }}</span>
 
             <!-- ถ้ามี check status เปิดได้ -->
-            <!----------------------------------------------------------------------->
             <span v-if="item.bone == true" class="boneCheck">&#10003;</span>
             <span v-if="item.bone == false" class="boneCheck">&#10006;</span>
             <span v-if="item.completeImage == true" class="imgCheck">&#10003;</span>
             <span v-if="item.completeImage == false" class="imgCheck">&#10006;</span>
-            <!----------------------------------------------------------------------->
 
 
             <button class="delete-Button">
@@ -63,7 +61,6 @@
   </div>
 </template>
 <script>
-// ------------------------------------------------------------------------------------------------------------------------------------
 import Vue from "vue/dist/vue.esm";
 import Router from "vue-router";
 import VueAxios from "vue-axios";
@@ -228,10 +225,10 @@ export default {
     }
   },
   async created(){//กำหนด apiLink และ apiCommand ตรงนี้
-  
-    // Real IP DB         : "http://202.28.24.50:3000/animal/bone/web/" --- อันนี้ฝั่งสัตวแพทย์ปิดเซฟอยู่
-    // P pond DB On Local : "http://localhost:3000/animal/bone/web/"  --- ใช้อันนี้ทดสอบไปก่อน
-    // My DB              : "http://localhost:4000/getAnimalName/" --อันนี้ที่ทำเอง
+
+    // Real IP DB         : "http://202.28.24.50:3000/animal/bone/web/" อันนี้ฝั่งสัตวแพทย์ปิดเซฟอยู่
+    // P pond DB On Local : "http://localhost:3000/animal/bone/web/"  ใช้อันนี้ทดสอบไปก่อน
+    // My DB              : "http://localhost:4000/getAnimalName/" อันนี้ที่ทำเอง
 
     //ลองยิง db 499 : ถ้าไม่เจอภายใน 500 ms ==>  close
     var res = await axios.get("http://localhost:4000"+"/getAnimalName",{timeout : 500})
@@ -266,7 +263,6 @@ export default {
     }
   }
 };
-// ------------------------------------------------------------------------------------------------------------------------------------
 </script>
 <style scoped>
 .table {
