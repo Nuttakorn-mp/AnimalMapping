@@ -7,15 +7,19 @@
     <div class="table">
       <div class="search">
         <input type="text" v-model="searchInput" placeholder="Search..." class="box-search" />
-        <!-- <span class="search-header">search</span> -->
         <span class="icon">
             <img src="../assets/icon/magnify.svg" alt="">
         </span>
       </div>
-      <span class="table-header-name" style="left: 200px">Name</span>
-      <span class="table-header-name" style="left: 700px">Bone</span>
-      <span class="table-header-name" style="left: 870px">Image</span>
-      <span class="table-header-name" style="left: 1150px">Clear Tag</span>
+
+      <span v-if="this.animalGet.length > 0 && this.db_available_status == true" 
+        class="table-header-name" style="left: 200px">Name</span>
+      <span v-if="this.animalGet.length > 0 && this.db_available_status == true" 
+        class="table-header-name" style="left: 700px">Bone</span>
+      <span v-if="this.animalGet.length > 0 && this.db_available_status == true" 
+        class="table-header-name" style="left: 870px">Image</span>
+      <span v-if="this.animalGet.length > 0 && this.db_available_status == true" 
+        class="table-header-name" style="left: 1150px">Clear Tag</span>
       <div class="element-name">
 
         <div class="result-search">
@@ -26,17 +30,15 @@
               item.englishName
             }}</span>
 
-            <!-- 31-34 ถ้ามี check status เปิดได้ -->
-
+            <!-- ถ้ามี check status เปิดได้ -->
+            <!----------------------------------------------------------------------->
             <span v-if="item.bone == true" class="boneCheck">&#10003;</span>
             <span v-if="item.bone == false" class="boneCheck">&#10006;</span>
             <span v-if="item.completeImage == true" class="imgCheck">&#10003;</span>
             <span v-if="item.completeImage == false" class="imgCheck">&#10006;</span>
+            <!----------------------------------------------------------------------->
 
 
-            <!-- <span v-if="item.englishName == 'Domestic Dog'">
-            <span class="_id">{{ item._id }}</span></span> -->
-            <!-- <span class="date">time</span> -->
             <button class="delete-Button">
               <img
                 src="../assets/delete.png"
@@ -45,9 +47,18 @@
               />
             </button>
           </div>
+
+          <div v-if="this.animalGet.length == 0 && this.db_available_status == true" style="text-align:center;">
+            <pre> </pre>
+            Loading...
+          </div>
+          <div v-if="this.db_available_status == false" style="text-align:center;">
+            <pre> </pre>
+            database is offline
+          </div>
+
         </div>
       </div>
-      <!-- <div class="test">{{this.animalNameGet}} <div>----{{this.animalGet}}</div></div> -->
     </div>
   </div>
 </template>
@@ -78,6 +89,7 @@ export default {
       searchInput: "",
       newline: "\n",
       project499:false,
+      db_available_status: true,
 
       //list สำหรับสร้างข้อมูลที่ต้องลบ (ใส่ frag =3)
       delList:[{
@@ -120,30 +132,34 @@ export default {
       // console.log(data)
       console.log(data.data.length)
       if (data.data.length >0) {
-        // this.delList = data
         this.delList[0].animalId = data.animal._id
         this.delList[0].boneId = data.animal.boneId
         this.delList[0].data = data.data
         for (let i = 0; i < data.data.length; i++) {
           for (let j = 0; j < data.data[i].coordinator.length; j++) {
-            //this.delList[0].data[i].coordinator[j].flag = 3 //frag 3== delete, frag 2 == edit, frag 1== add
+            //this.delList[0].data[i].coordinator[j].flag = 3      //frag 3== delete, frag 2 == edit, frag 1== add
             this.delList[0].data[i].coordinator[j].flag = 3
           } // end nest for
         }// end out for
 
-        //call put api here
-        console.log(this.delList[0])
-
+        // call put api here
+        // console.log(this.delList[0])
         if(this.project499){//true ==> ใช้ api ของ 499
-          // axios.put(this.apiLink+this.apiCommand_GetAllAnimalName+"/"+this.delList[0].animalId,this.delList[0]).then(window.alert("Delete Complete!"))
+          axios.put(this.apiLink+this.apiCommand_PUT_AnimalData+"/"+this.delList[0].animalId,this.delList[0])
+          .then(window.alert("Delete Complete!"))
+          .catch(err=>{
+            if(err.code == 'ECONNABORTED'){Promise.reject(err)}
+            console.log("Lost connection when update")
+            })
         }
         else{//false ==> ใช้ api ของสัตวแพทย์
-          axios.put(this.apiLink+this.apiCommand_PUT_AnimalData,this.delList[0]).then(window.alert("Delete Complete!")) // for real use
+          axios.put(this.apiLink+this.apiCommand_PUT_AnimalData,this.delList[0])
+          .then(window.alert("Delete Complete!"))
+          .catch(err=>{
+            if(err.code == 'ECONNABORTED'){Promise.reject(err)}
+            console.log("Lost connection when update")
+            })
         }
-        
-        
-
-
         
       }
       else{
@@ -155,8 +171,11 @@ export default {
     async getToDel(id){
       let _this = this
       axios.get(this.apiLink+this.apicommand_GetAnimal_by_id+"/"+id).then(Response => {
-      // axios.get(this.apiLink+this.apiCommand_GetAllAnimalName+"/"+id).then(Response => {
         _this.deleteTrack(Response.data)
+        })
+      .catch(err=>{
+        if(err.code == 'ECONNABORTED'){Promise.reject(err)}
+        window.alert("Database offline")
         })
     },
 
@@ -174,20 +193,17 @@ export default {
     ถ้ามีทั้งคู่ ก็ผ่านไปหน้าถัดไป
     ถ้าไม่มีก็แสดง alert window ว่าไม่มีและอยู่หน้าเดิม */
     async get_real_use(_id, englishName){
-      // "http://localhost:4000/getAnimalName/"+_id
       // console.log(this.apiLink+this.apicommand_GetAnimal_by_id+"/"+_id)
 
-      var get = await axios.get(this.apiLink+this.apicommand_GetAnimal_by_id+"/"+_id).then(Response => Response.data)
-
-      this.aaa = await get
-      // console.log("get is ")
-      // console.log(await get)
-      // console.log("animalID : "+_id)
+      var get = await axios.get(this.apiLink+this.apicommand_GetAnimal_by_id+"/"+_id)
+      .then(Response => Response.data)
+      .catch(err=>{
+        if(err.code == 'ECONNABORTED'){Promise.reject(err)}
+        this.db_available_status = false
+        this.animalGet=[]
+      })
 
       try {//get boneId
-        // var bone = await get.bone
-        // var boneL = await Object.values(get.bone).length
-        // var boneId = null
         var boneId = await get.animal.boneId
         // console.log("boneId : "+boneId)
         
@@ -198,24 +214,16 @@ export default {
       try {
         var comImg = await get.animal.completeImagePath
         var comImgL = await comImg.length
-
-        if(comImgL == 0){console.log("Image : No image")}
-        
       } catch (error) {
         console.log("Image : "+comImg)
       }
 
         if ( //มีข้อมูลกระดูก +มี complete image path
-          // await bone &&
-          // await boneL > 0 &&
           await typeof boneId !== 'undefined' &&
-          // await comImg &&
           await typeof comImg !== 'undefined' &&
           await comImgL > 0
         ) {
           console.log(englishName+" pass condition");
-          // console.log(await get)
-          // this.aaa = await get
 
           this.$router.push({
           name: "add-data",
@@ -223,39 +231,42 @@ export default {
         });
 
         }
-      
-
       console.log("\n")
     }
   },
-  created(){//กำหนด apiLink และ apiCommand ตรงนี้
-    //ถ้าใช้ api ของ499 ให้เปิดเป็น true ==> ถ้าไม่ใช่ ก็ปิดบรรทัดที่ 234 เพราะ false init
-    this.project499=true;
+  async created(){//กำหนด apiLink และ apiCommand ตรงนี้
 
-    if(this.project499){//true ==> api 499
-      // this.apiLink = "http://192.168.1.106:4000";
-      this.apiLink ="http://localhost:4000";
+    //ลองยิง db 499 : ถ้าไม่เจอภายใน 500 ms ==>  close
+    var res = await axios.get("http://localhost:4000"+"/getAnimalName",{timeout : 500})
+    .then(Response => Response)
+    .catch(err=>{if(err.code == 'ECONNABORTED'){Promise.reject(err)}})
+
+    if(typeof res  !== 'undefined'){//ยิงแล้วเจอ
+      console.log("499 db is online")
+      this.apiLink = "http://localhost:4000";
       this.apiCommand_GetAllAnimalName = "/getAnimalName";
       this.apicommand_GetAnimal_by_id = "/getAnimalName";
       this.apiCommand_PUT_AnimalData = "/getAnimalName";
+      this.animalGet = res.data
+      this.project499=true;
     }
-    else{//false ==> api optional config
+    else{// ยิงแล้ว db อันแรกปิด ==> ใช้อันที่สอง
       this.apiLink ="http://localhost:3000"
       this.apiCommand_GetAllAnimalName="/animal/get-all-animal-name"
       this.apicommand_GetAnimal_by_id="/animal/bone/web"
       this.apiCommand_PUT_AnimalData="/animal/update-tag"
-    }
-    
-
-
-    
-
-
-
-      // http://192.168.1.106:4000/getAnimalName
       axios.get(this.apiLink+this.apiCommand_GetAllAnimalName).then(Response => {
-      this.animalGet = Response.data
+        console.log("optional db is online")
+        this.animalGet = Response.data
+        this.project499=false;
       })
+      .catch(err =>{
+        if(err.code == 'ECONNABORTED'){Promise.reject(err)}
+        console.log("both db close")
+        this.db_available_status = false
+        // console.log(this.db_available_status)
+      })
+    }
   }
 };
 // ------------------------------------------------------------------------------------------------------------------------------------
@@ -272,23 +283,16 @@ export default {
 .blank {
   display: flex;
   height: 100%;
-  /* width: 100%; */
-  /* height: 700px; */
   background-color: white;
-  /* background-color: lightseagreen; */
 }
 .header-name {
   position: absolute;
   left: 670px;
-  /* top: 9px; */
   font-size: xx-large;
   font: bold;
 }
 .search-header {
   font-size: x-large;
-  /* position: absolute; */
-  /* top: 5px; */
-  /* left: 10px; */
   position: absolute;
   font-size: xx-large;
   font: bold;
@@ -300,10 +304,8 @@ export default {
   left: 345px;
   width: 500px;
   height: 50px;
-  /* border: 1px solid black; */
 }
 .box-search {
-  /* border: 1px solid black; */
   position: absolute;
   width: 405px;
   height: 35px;
@@ -311,8 +313,6 @@ export default {
   padding-left: 10px;
   border-radius: 5px;
   left: 100px;
-  /* top: 9px; */
-  /* background-color: rgb(196, 196, 196, 0.5); */
   border: 1px solid #eaeaea;
   box-shadow: 0 0.5rem 1.2rem rgb(0 0 0 / 10%);
 }
@@ -320,7 +320,6 @@ export default {
   width: auto;
   height: auto;
   position: absolute;
-  /* left: 10px; */
   top: 80px;
   font-size: x-large;
   font-weight: bold;
@@ -331,22 +330,17 @@ export default {
   top: 70px;
 }
 .delete-Button {
-  /* padding-top: 10px; */
-  /* top: -7px; */
-  /* left: 825px; */
   left: 1025px;
   position: absolute;
   background-color: unset;
   border: unset;
 }
 .result-search {
-  /* padding-top: 7px; */
   position: absolute;
   top: 55px;
   left: 155px;
   width: 950px;
   height: auto;
-  /* border: 1px solid black; */
 }
 .date {
   position: absolute;

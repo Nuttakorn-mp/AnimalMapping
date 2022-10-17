@@ -60,7 +60,6 @@ import Vue from "vue/dist/vue.esm";
 import draggable from "vuedraggable";
 import Router from "vue-router";
 import VueSimpleAlert from "vue-simple-alert";
-// import WriteJson from "write-json-file";
 import VueAxios from "vue-axios";
 import axios from "axios";
 
@@ -822,10 +821,7 @@ export default {
     initData_for_499() {
       let _this = this;
       this.dataGet[0] = this.animaldata;
-      // console.log("-------------")
-      // console.log(this.dataGet[0])
       setTimeout(()=>_this.loadTag(),200);
-      // console.log("create map data");
 
       if(this.animalName != "Arapaima"){
         // console.log(this.dataGet[0].bone)
@@ -868,7 +864,7 @@ export default {
           ...new Map(this.createList.map((item) => [item.title, item])).values(),
         ]; //[item.title, item]
         console.log(this.createList)
-    }
+      }
 
       else{
         this.createList = [
@@ -888,12 +884,6 @@ export default {
         ];
       }
 
-      // console.log("End create map data");
-      // console.log(this.createList);
-      // console.log("create list")
-      // console.log(this.createList)
-
-      // console.log(Object.values(this.dataGet[0].bone.axial).length)
     },
     convert_data_structure_real_use_to_499_structure(_boneId){
       // console.log(typeof this.animaldata)
