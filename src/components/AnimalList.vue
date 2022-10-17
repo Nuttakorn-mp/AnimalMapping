@@ -74,7 +74,6 @@ export default {
       apiLink:"",
       apiCommand_GetAllAnimalName:"",
       apicommand_GetAnimal_by_id:"",
-      apiCommand_GetBone:"",
       apiCommand_PUT_AnimalData:"",
       searchInput: "",
       newline: "\n",
@@ -166,7 +165,6 @@ export default {
       // console.log("U click");
       let _this= this
       _this.get_real_use(_id, englishName)
-      // _this.get_for_499(_id, englishName)
     },
 
     
@@ -176,27 +174,22 @@ export default {
     ถ้ามีทั้งคู่ ก็ผ่านไปหน้าถัดไป
     ถ้าไม่มีก็แสดง alert window ว่าไม่มีและอยู่หน้าเดิม */
     async get_real_use(_id, englishName){
-      // var get = await axios.get("http://192.168.1.106:4000/getAnimalName/"+_id).then(Response => Response.data)
-      console.log(this.apiLink+this.apicommand_GetAnimal_by_id+"/"+_id)
+      // "http://localhost:4000/getAnimalName/"+_id
+      // console.log(this.apiLink+this.apicommand_GetAnimal_by_id+"/"+_id)
 
       var get = await axios.get(this.apiLink+this.apicommand_GetAnimal_by_id+"/"+_id).then(Response => Response.data)
 
-      // for 499
-      // var bone = await axios.get(this.apiLink+this.apiCommand_GetBone+"/"+_id).then(Response => Response.data)
-
-
-      // console.log(bone)
       this.aaa = await get
       // console.log("get is ")
       // console.log(await get)
-      console.log("animalID : "+_id)
+      // console.log("animalID : "+_id)
 
       try {//get boneId
         // var bone = await get.bone
         // var boneL = await Object.values(get.bone).length
         // var boneId = null
         var boneId = await get.animal.boneId
-        console.log("boneId : "+boneId)
+        // console.log("boneId : "+boneId)
         
       } catch (error) {//get conplete_Image
         console.log("boneId : "+boneId)
@@ -226,6 +219,7 @@ export default {
 
           this.$router.push({
           name: "add-data",
+          // params: { animalName: englishName, animalID: _id,pullData: get,project499:this.project499},
           params: { animalName: englishName, animalID: _id,pullData: get,project499:this.project499},
         });
 
@@ -236,20 +230,20 @@ export default {
     }
   },
   created(){//กำหนด apiLink และ apiCommand ตรงนี้
-    this.project499=false; //ถ้าใช้ api ของ499 ให้เปิดเป็น true
+    //ถ้าใช้ api ของ499 ให้เปิดเป็น true ==> ถ้าไม่ใช่ ก็ปิดบรรทัดที่ 234 เพราะ false init
+    this.project499=true;
 
     if(this.project499){//true ==> api 499
       // this.apiLink = "http://192.168.1.106:4000";
-      // this.apiCommand_GetAllAnimalName = "/getAnimalName";
-      // this.apicommand_GetAnimal_by_id="/getAnimalName"
-      // this.apiCommand_GetBone="/getAnimalName/"
-      // this.apiCommand_PUT_AnimalData
+      this.apiLink ="http://localhost:4000";
+      this.apiCommand_GetAllAnimalName = "/getAnimalName";
+      this.apicommand_GetAnimal_by_id = "/getAnimalName";
+      this.apiCommand_PUT_AnimalData = "/getAnimalName";
     }
     else{//false ==> api สัตวแพทย์
       this.apiLink ="http://localhost:3000"
       this.apiCommand_GetAllAnimalName="/animal/get-all-animal-name"
       this.apicommand_GetAnimal_by_id="/animal/bone/web"
-      this.apiCommand_GetBone="/bone"
       this.apiCommand_PUT_AnimalData="/animal/update-tag"
     }
     
@@ -261,10 +255,7 @@ export default {
 
       // http://192.168.1.106:4000/getAnimalName
       axios.get(this.apiLink+this.apiCommand_GetAllAnimalName).then(Response => {
-      // axios.get("http://192.168.1.106:4000/getAnimalName").then(Response => {
       this.animalGet = Response.data
-      // console.log(this.apiLink)
-      // console.log(this.animalGet)
       })
   }
 };
