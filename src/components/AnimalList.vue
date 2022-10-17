@@ -219,7 +219,6 @@ export default {
 
           this.$router.push({
           name: "add-data",
-          // params: { animalName: englishName, animalID: _id,pullData: get,project499:this.project499},
           params: { animalName: englishName, animalID: _id,pullData: get,project499:this.project499},
         });
 
