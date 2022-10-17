@@ -76,12 +76,6 @@ export default {
   props: {},
   data: () => {
     return {
-      //http://202.28.24.50:3000/
-      //http://localhost:3000/animal/bone/web/
-
-      // Real IP DB         : "http://202.28.24.50:3000/animal/bone/web/" --- อันนี้ฝั่งสัตวแพทย์ปิดเซฟอยู่
-      // P pond DB On Local : "http://localhost:3000/animal/bone/web/"  --- ใช้อันนี้ทดสอบไปก่อน
-      // My DB              : "http://localhost:4000/getAnimalName/" --อันนี้ที่ทำเอง
       apiLink:"",
       apiCommand_GetAllAnimalName:"",
       apicommand_GetAnimal_by_id:"",
@@ -93,7 +87,6 @@ export default {
 
       //list สำหรับสร้างข้อมูลที่ต้องลบ (ใส่ frag =3)
       delList:[{
-        // animalID : null,
         boneId : null,
         data: [],
       }
@@ -235,6 +228,10 @@ export default {
     }
   },
   async created(){//กำหนด apiLink และ apiCommand ตรงนี้
+  
+    // Real IP DB         : "http://202.28.24.50:3000/animal/bone/web/" --- อันนี้ฝั่งสัตวแพทย์ปิดเซฟอยู่
+    // P pond DB On Local : "http://localhost:3000/animal/bone/web/"  --- ใช้อันนี้ทดสอบไปก่อน
+    // My DB              : "http://localhost:4000/getAnimalName/" --อันนี้ที่ทำเอง
 
     //ลองยิง db 499 : ถ้าไม่เจอภายใน 500 ms ==>  close
     var res = await axios.get("http://localhost:4000"+"/getAnimalName",{timeout : 500})
