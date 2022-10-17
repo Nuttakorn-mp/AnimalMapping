@@ -239,7 +239,7 @@ export default {
       this.apicommand_GetAnimal_by_id = "/getAnimalName";
       this.apiCommand_PUT_AnimalData = "/getAnimalName";
     }
-    else{//false ==> api สัตวแพทย์
+    else{//false ==> api optional config
       this.apiLink ="http://localhost:3000"
       this.apiCommand_GetAllAnimalName="/animal/get-all-animal-name"
       this.apicommand_GetAnimal_by_id="/animal/bone/web"
