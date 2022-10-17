@@ -225,7 +225,6 @@ export default {
     }
   },
   async created(){//กำหนด apiLink และ apiCommand ตรงนี้
-
     // Real IP DB         : "http://202.28.24.50:3000/animal/bone/web/" อันนี้ฝั่งสัตวแพทย์ปิดเซฟอยู่
     // P pond DB On Local : "http://localhost:3000/animal/bone/web/"  ใช้อันนี้ทดสอบไปก่อน
     // My DB              : "http://localhost:4000/getAnimalName/" อันนี้ที่ทำเอง
