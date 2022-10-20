@@ -399,9 +399,9 @@ export default {
         }
         // console.log("post is ");
         // console.log(this.postList[0]);
-        console.log("----------------------");
-        console.log(" ")
-        console.log("POST...")
+        // console.log("----------------------");
+        // console.log(" ")
+        // console.log("POST...")
         // console.log(this.dataGet[0])
 
         // call API POST //
@@ -547,14 +547,14 @@ export default {
         // console.log(this.putList[0]);
         // console.log(this.createJson[0].pic)
         // console.log("----------------------");
-        console.log(" ")
-        console.log("PUT...")
+        // console.log(" ")
+        // console.log("PUT...")
 
         //call API PUT
         _this.putAPI(this.putList[0]);
         console.log(" ");
       }
-      window.alert("Complete!");
+      // window.alert("Complete!");
     },
     discard() {
       this.$router.replace("/modify-data");
@@ -902,8 +902,10 @@ export default {
     },
     async postAPI(data) {//integrate complete
       if(this.project499){//true ==> ใช้ api ของ 499
-        axios.put(this.apiLink+this.apiCommand_POST_AnimalData+"/"+data.animalId, data).then(
-            console.log("post complete"),
+        axios.put(this.apiLink+this.apiCommand_POST_AnimalData+"/"+data.animalId, data)
+        .then(
+          this.notify('success','Success'),
+          console.log("post complete"),
           // console.log(data),
           this.$router.replace("/modify-data")
         );
@@ -911,6 +913,7 @@ export default {
       else{//false ==> ใช้ api ของสัตวแพทย์
         axios.put(this.apiLink+this.apiCommand_POST_AnimalData, data).then(
         // axios.put("http://localhost:4000/getAnimalName/"+data.animalId, data).then(
+          this.notify('success','Success'),
           console.log("post complete"),
           // console.log(data),
           this.$router.replace("/modify-data")
@@ -920,14 +923,18 @@ export default {
     },
     async putAPI(data) {// integrate complete
       if(this.project499){//true ==> ใช้ api ของ 499
-        axios.put(this.apiLink+this.apiCommand_PUT_AnimalData+"/"+data.animalId, data).then(
+        axios.put(this.apiLink+this.apiCommand_PUT_AnimalData+"/"+data.animalId, data)
+        .then(
+          this.notify('success','Success'),
           console.log("put complete"),
           // console.log(data),
           this.$router.replace("/modify-data")
         );
       }
       else{//false ==> ใช้ api ของสัตวแพทย์
-        axios.put(this.apiLink+this.apiCommand_PUT_AnimalData, data).then(
+        axios.put(this.apiLink+this.apiCommand_PUT_AnimalData, data)
+        .then(
+          this.notify('success','Success'),
           console.log("put complete"),
           // console.log(data),
           this.$router.replace("/modify-data")
@@ -935,6 +942,15 @@ export default {
       }
       
       
+    },
+    notify(type,title,text=''){
+    this.$notify({
+      type: type,
+      title: title,
+      text: text,
+      duration: 500,
+      speed: 400,
+    });
     },
   },
   data: () => {

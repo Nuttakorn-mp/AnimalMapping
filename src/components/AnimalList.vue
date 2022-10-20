@@ -54,10 +54,10 @@
             <pre> </pre>
             database is offline
           </div>
-
         </div>
       </div>
     </div>
+  
   </div>
 </template>
 <script>
@@ -65,6 +65,9 @@ import Vue from "vue/dist/vue.esm";
 import Router from "vue-router";
 import VueAxios from "vue-axios";
 import axios from "axios";
+
+import Notifications from 'vue-notification'
+Vue.use(Notifications)
 Vue.use(Router);
 Vue.use(VueAxios, axios);
 export default {
@@ -116,6 +119,16 @@ export default {
     
   },
   methods: {
+    notify(type,title,text=''){
+    this.$notify({
+      type: type,
+      title: title,
+      text: text,
+      duration: 500,
+      speed: 400,
+    });
+    },
+
     //delete ข้อมูลจับคู่ที่เคยทำไว้ทั้งหมด
     deleteTrack(data) {
       console.log("delete tag call")
@@ -136,23 +149,28 @@ export default {
         // console.log(this.delList[0])
         if(this.project499){//true ==> ใช้ api ของ 499
           axios.put(this.apiLink+this.apiCommand_PUT_AnimalData+"/"+this.delList[0].animalId,this.delList[0])
-          .then(window.alert("Delete Complete!"))
+          .then(
+            // window.alert("Delete Complete!")
+            this.notify('success','Success')
+            )
           .catch(err=>{
             if(err.code == 'ECONNABORTED'){Promise.reject(err)}
-            console.log("Lost connection when update")
             })
         }
         else{//false ==> ใช้ api ของสัตวแพทย์
           axios.put(this.apiLink+this.apiCommand_PUT_AnimalData,this.delList[0])
-          .then(window.alert("Delete Complete!"))
+          .then(
+            // window.alert("Delete Complete!")
+            this.notify('success','Success')
+            )
           .catch(err=>{
             if(err.code == 'ECONNABORTED'){Promise.reject(err)}
-            console.log("Lost connection when update")
             })
         }
         
       }
       else{
+        this.notify('success','Success'),
         console.log("Nothing to delete")
       }
     },
@@ -160,12 +178,15 @@ export default {
     //ดึงข้อมูล animal ที่ต้องการลบข้อมูล จากนั้นเรียก deletetrack
     async getToDel(id){
       let _this = this
+
       axios.get(this.apiLink+this.apicommand_GetAnimal_by_id+"/"+id).then(Response => {
         _this.deleteTrack(Response.data)
+        // console.log(Response.code)
         })
       .catch(err=>{
         if(err.code == 'ECONNABORTED'){Promise.reject(err)}
-        window.alert("Database offline")
+        console.log("Database offline")
+        _this.notify('error','Connection Lost')
         })
     },
 
@@ -191,6 +212,7 @@ export default {
         if(err.code == 'ECONNABORTED'){Promise.reject(err)}
         this.db_available_status = false
         this.animalGet=[]
+        this.notify('error','Connection Lost')
       })
 
       try {//get boneId
@@ -225,9 +247,9 @@ export default {
     }
   },
   async created(){//กำหนด apiLink และ apiCommand ตรงนี้
-    // Real IP DB         : "http://202.28.24.50:3000/animal/bone/web/" อันนี้ฝั่งสัตวแพทย์ปิดเซฟอยู่
-    // P pond DB On Local : "http://localhost:3000/animal/bone/web/"  ใช้อันนี้ทดสอบไปก่อน
-    // My DB              : "http://localhost:4000/getAnimalName/" อันนี้ที่ทำเอง
+    // Real       : "http://202.28.24.50:3000"
+    // P pond DB  : "http://localhost:3000/animal/bone/web/"
+    // My DB      : "http://localhost:4000/getAnimalName/"
 
     //ลองยิง db 499 : ถ้าไม่เจอภายใน 500 ms ==>  close
     var res = await axios.get("http://localhost:4000"+"/getAnimalName",{timeout : 500})

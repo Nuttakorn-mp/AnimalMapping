@@ -1,24 +1,28 @@
 <template>
   <div id="app" class="header">
+    <notifications class="vue-notification"/>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-// import { Slide } from "vue-burger-menu";
-
 export default {
   name: "App",
-  components: {
-    // Slide,
-  },
+  components: {},
   methods: {},
 };
 </script>
 <style scoped>
-body{
+body {
   margin: 0;
-  /* margin: 0 !important; */
+}
+.vue-notification{
+  position: "top center";
+  top: 40;
+  max-width: 200px;
+  font-weight: 800;
+  border-left: white;
+  background-color: white;
 }
 </style>
 
