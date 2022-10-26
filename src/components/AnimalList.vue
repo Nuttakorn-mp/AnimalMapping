@@ -238,6 +238,7 @@ export default {
         ) {
           console.log(englishName+" pass condition");
 
+          //ส่งข้อมูลจาก db และการตั้งค่าที่เซ็ตไว้จากหน้าแรก
           this.$router.push({
           name: "add-data",
           params: { 
@@ -256,7 +257,6 @@ export default {
     }
   },
   async created(){//กำหนด apiLink และ apiCommand ตรงนี้
-    // Real       : "http://202.28.24.50:3000"
     // P pond DB  : "http://localhost:3000/animal/bone/web/"
     // My DB      : "http://localhost:4000/getAnimalName/"
 
