@@ -80,6 +80,7 @@ export default {
       apiCommand_GetAllAnimalName:"",
       apicommand_GetAnimal_by_id:"",
       apiCommand_PUT_AnimalData:"",
+      apiCommand_POST_AnimalData:"",
       searchInput: "",
       newline: "\n",
       project499:false,
@@ -239,7 +240,15 @@ export default {
 
           this.$router.push({
           name: "add-data",
-          params: { animalName: englishName, animalID: _id,pullData: get,project499:this.project499},
+          params: { 
+            animalName: englishName,
+            animalID: _id,
+            pullData: get,
+            project499:this.project499,
+            api:this.apiLink,
+            put:this.apiCommand_PUT_AnimalData,
+            post:this.apiCommand_POST_AnimalData
+           },
         });
 
         }
@@ -282,6 +291,28 @@ export default {
         // console.log(this.db_available_status)
       })
     }
+
+    // ตั้งค่า และเปิดตั้งแต่บรรทัดนี้
+    // this.apiLink ="http://localhost:3000"
+    // this.apiCommand_GetAllAnimalName="/animal/get-all-animal-name"
+    // this.apicommand_GetAnimal_by_id="/animal/bone/web"
+    // this.apiCommand_PUT_AnimalData="/animal/update-tag"
+    // this.apiCommand_POST_AnimalData="/animal/bone"
+
+
+    // axios.get(this.apiLink+this.apiCommand_GetAllAnimalName).then(Response => {
+    //   console.log("optional db is online")
+    //   this.animalGet = Response.data
+    //   this.project499=false;
+    // })
+    // .catch(err =>{
+    //   if(err.code == 'ECONNABORTED'){Promise.reject(err)}
+    //   this.db_available_status = false
+    // })
+    //จนถึงบรรทัดนี้
+
+
+
   }
 };
 </script>

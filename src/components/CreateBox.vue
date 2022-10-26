@@ -961,7 +961,6 @@ export default {
       // My DB              : "http://localhost:4000/getAnimalName/"+data.animalId --อันนี้ที่ทำเอง
       // http://192.168.1.106:4000 ==>  current use
       apiLink:"",
-      apiCommand_GetAllAnimalName:"",
       apiCommand_POST_AnimalData:"",
       apiCommand_PUT_AnimalData:"",
       id: null,
@@ -1027,9 +1026,9 @@ export default {
     if(this.project499){//true ==> ใช้ api ของ 499
       
       //config data here (499 project)
-      this.apiLink ="http://localhost:4000";
-      this.apiCommand_POST_AnimalData="/getAnimalName"
-      this.apiCommand_PUT_AnimalData="/getAnimalName"
+      this.apiLink = this.$route.params.api;
+      this.apiCommand_POST_AnimalData = this.$route.params.post;
+      this.apiCommand_PUT_AnimalData = this.$route.params.put;
 
       this.id = this.$route.params.animalID;
       this.animalName = this.$route.params.animalName;
@@ -1042,9 +1041,9 @@ export default {
     }
     else{//false ==> ใช้ api ของสัตวแพทย์
       //config data here (real use)
-      this.apiLink ="http://localhost:3000"
-      this.apiCommand_POST_AnimalData="/animal/bone"
-      this.apiCommand_PUT_AnimalData="/animal/update-tag"
+      this.apiLink = this.$route.params.api;
+      this.apiCommand_POST_AnimalData = this.$route.params.post;
+      this.apiCommand_PUT_AnimalData = this.$route.params.put;
 
       this.id = this.$route.params.animalID;
       this.animalName = this.$route.params.animalName;
