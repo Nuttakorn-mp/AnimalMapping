@@ -9,8 +9,10 @@ Vue.use(Router)
 const routes = [
   {name:'add-data',path:'/add-data', component:CreateBox, props: true},
   {path:'/modify-data', component:AnimalList, props: true},
-  {path:'/', redirect:'/modify-data' ,component:AnimalList, props: true},// เด้งไปบรรทัดที่ 11
-  { path: "*", component: NotFound }
+  { path: "/add-data/*", component: NotFound },
+  {path:'*', redirect:'/modify-data' ,component:AnimalList, props: true},// เด้งไปบรรทัดที่ 11
+  // {path:'/', redirect:'/modify-data' ,component:AnimalList, props: true},// เด้งไปบรรทัดที่ 11
+  // { path: "*", component: NotFound }
 ];
 // Router.replace({ path: '*', redirect: '/modify-data' })
 export default routes;  
