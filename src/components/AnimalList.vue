@@ -2,13 +2,15 @@
   <div class="blank">
     <p class="header-name">Modify Data</p>
     <p class="header-name" style="left: 80px; top: -5px">
-      <img src="../assets/original.png" style="width: 269px" />
+      <!-- <img src="../assets/original.png" style="width: 269px" /> -->
+      <img src= "~@/assets/original.png" @error="$event.target.src='/src/assets/original.png'" style="width: 269px" />
     </p>
     <div class="table">
       <div class="search">
         <input type="text" v-model="searchInput" placeholder="Search..." class="box-search" />
         <span class="icon">
-            <img src="../assets/icon/magnify.svg" alt="">
+            <!-- <img src="../assets/icon/magnify.svg" alt=""> -->
+            <img src= "~@/assets/icon/magnify.svg" @error="$event.target.src='/src/assets/icon/magnify.svg'"/>
         </span>
       </div>
 

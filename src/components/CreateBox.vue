@@ -2,7 +2,8 @@
   <div>
     <div class="blank">
       <p class="header-name" style="left: 80px; top: -5px">
-        <img src="../assets/original.png" style="width: 269px" />
+        <!-- <img src="../assets/original.png" style="width: 269px" /> -->
+        <img src= "~@/assets/original.png" @error="$event.target.src='/src/assets/original.png'" style="width: 269px" />
       </p>
       <p class="animal-name">{{ $route.params.animalName }}</p>
       <p class="data-map-header">Data Mapping</p>
@@ -153,22 +154,15 @@ export default {
         }
 
         const app = new Vue({
-          //     template: `<div>
-          // <draggable :style="dragCreate" :list="createList" group="people">
-          //   <div
-          //       v-for="(element, index) in createList"
-          //       :key="element.name"
-          //     >
-          //       {{ element.name }}
-          //     </div>
-          // </draggable>
-          // </div>`,
+          // spare line 165
+          //   <button :style="deleteIcon"><img src=${require("../assets/icon/x-mark.png")} alt="" :style="deleteImg" @click="destroy()"></button>
+
           template: `
           <div id="${event.x}${Math.ceil(event.y)}${
             this.indexImg
           }" v-show="show" :style="dragCreate" @drop="onDrop($event);" @dragover.prevent @dragenter.prevent >
             {{this.createList[0].title}}
-            <button :style="deleteIcon"><img src=${require("../assets/icon/x-mark.png")} alt="" :style="deleteImg" @click="destroy()"></button>
+            <button :style="deleteIcon"><img src=${require("../assets/icon/x-mark.png")} @error="$event.target.src='/src/assets/icon/x-mark.png'" :style="deleteImg" @click="destroy()"></button>
           </div>
           `,
           data: {
