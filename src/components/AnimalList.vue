@@ -222,30 +222,7 @@ export default {
       console.log('Get from id : ')
 
       var get = await axios.get(this.apiLink+this.apicommand_GetAnimal_by_id+"/"+_id)
-      .then(Response => {
-        Response.data
-        console.log('in axios : ')
-        console.log(Response.data)
-
-        // console.log(Response.data.animal.boneId)
-        // console.log(Response.data.animal.completeImagePath)
-        try {//get boneId
-          this.boneId = Response.data.animal.boneId
-          this.comImg = Response.data.animal.completeImagePath
-          this.data_from_api = Response.data
-
-          // console.log(this.data_from_api)
-
-          console.log(this.boneId)
-          console.log(typeof this.boneId !== 'undefined')
-          console.log(this.comImg)
-          console.log(typeof this.comImg !== 'undefined')
-          
-        } catch (error) {//get conplete_Image
-          console.log("error to get boneId & comImg")
-        }
-        
-        })
+      .then(Response => Response.data)
       .catch(err=>{
         if(err.code == 'ECONNABORTED'){Promise.reject(err)}
         this.db_available_status = false
@@ -253,27 +230,35 @@ export default {
         this.notify('error','Connection Lost')
       })
 
-      // try {//get boneId
-      //   var boneId = await get.animal.boneId
-      //   // console.log("boneId : "+boneId)
+      try {//get boneId
+        var boneId = await get.animal.boneId
+        // console.log("boneId : "+boneId)
         
-      // } catch (error) {//get conplete_Image
-      //   console.log("boneId : "+boneId)
-      // }
+      } catch (error) {//get conplete_Image
+        console.log("boneId : "+boneId)
+      }
 
-      // try {
-      //   var comImg = await get.animal.completeImagePath
-      //   var comImgL = await comImg.length
-      // } catch (error) {
-      //   console.log("Image : "+comImg)
-      // }
+      try {
+        var comImg = await get.animal.completeImagePath
+        var comImgL = await comImg.length
+      } catch (error) {
+        console.log("Image : "+comImg)
+      }
 
         if ( //มีข้อมูลกระดูก +มี complete image path
           typeof this.boneId !== 'undefined' &&
           typeof this.comImg !== 'undefined'
-          // && await comImgL > 0
+          && await comImgL > 0
         ) {
           console.log(englishName+" pass condition");
+
+          console.log(englishName)
+          console.log(_id)
+          console.log(get)
+          console.log(this.project499)
+          console.log(this.apiLink)
+          console.log(this.apiCommand_PUT_AnimalData)
+          console.log(this.apiCommand_POST_AnimalData)
 
           //ส่งข้อมูลจาก db และการตั้งค่าที่เซ็ตไว้จากหน้าแรก
           this.$router.push({
@@ -281,8 +266,8 @@ export default {
           params: { 
             animalName: englishName,
             animalID: _id,
-            // pullData: get,
-            pullData: this.data_from_api,
+            pullData: get,
+            // pullData: this.data_from_api,
             project499:this.project499,
             api:this.apiLink,
             put:this.apiCommand_PUT_AnimalData,
@@ -317,6 +302,7 @@ export default {
       this.apiCommand_GetAllAnimalName="/animal/get-all-animal-name"
       this.apicommand_GetAnimal_by_id="/animal/bone/web"
       this.apiCommand_PUT_AnimalData="/animal/update-tag"
+      this.apiCommand_POST_AnimalData="/animal/bone"
       axios.get(this.apiLink+this.apiCommand_GetAllAnimalName).then(Response => {
         console.log("optional db is online")
         this.animalGet = Response.data
