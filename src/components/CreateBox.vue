@@ -1035,6 +1035,7 @@ export default {
     }
     else{//false ==> ใช้ api ของสัตวแพทย์
       //config data here (real use)
+      console.log(this.project499)
       this.apiLink = this.$route.params.api;
       this.apiCommand_POST_AnimalData = this.$route.params.post;
       this.apiCommand_PUT_AnimalData = this.$route.params.put;

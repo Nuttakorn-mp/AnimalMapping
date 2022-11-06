@@ -48,7 +48,7 @@
             </button>
           </div>
 
-          <div v-if="this.animalGet.length == 0 && this.db_available_status == true" style="text-align:center;">
+          <div v-if="this.animalGet.length == 0 && this.db_available_status == true && this.finish_Load == false" style="text-align:center;">
             <pre> </pre>
             Loading...
           </div>
@@ -56,6 +56,10 @@
             <pre> </pre>
             database is offline
           </div>
+          <!-- <div v-if="this.animalGet.length == 0 && this.finish_Load==true" style="text-align:center;">
+            <pre> </pre>
+            service is not available
+          </div> -->
         </div>
       </div>
     </div>
@@ -87,6 +91,10 @@ export default {
       newline: "\n",
       project499:false,
       db_available_status: true,
+      finish_Load:false,
+      boneId:'',
+      comImg:[],
+      data_from_api:{},
 
       //list สำหรับสร้างข้อมูลที่ต้องลบ (ใส่ frag =3)
       delList:[{
@@ -207,36 +215,62 @@ export default {
     ถ้ามีทั้งคู่ ก็ผ่านไปหน้าถัดไป
     ถ้าไม่มีก็แสดง alert window ว่าไม่มีและอยู่หน้าเดิม */
     async get_real_use(_id, englishName){
-      // console.log(this.apiLink+this.apicommand_GetAnimal_by_id+"/"+_id)
+      console.log()
+      console.log('get animal from id ')
+      console.log(this.apiLink+this.apicommand_GetAnimal_by_id+"/"+_id)
+      console.log()
+      console.log('Get from id : ')
 
       var get = await axios.get(this.apiLink+this.apicommand_GetAnimal_by_id+"/"+_id)
-      .then(Response => Response.data)
+      .then(Response => {
+        Response.data
+        console.log(Response.data)
+        // console.log(Response.data.animal.boneId)
+        // console.log(Response.data.animal.completeImagePath)
+        try {//get boneId
+          this.boneId = Response.data.animal.boneId
+          this.comImg = Response.data.animal.completeImagePath
+          this.data_from_api = Response.data
+
+          // console.log(this.data_from_api)
+
+          // console.log(this.boneId)
+          // console.log(typeof this.boneId !== 'undefined')
+          // console.log(this.comImg)
+          // console.log(typeof this.comImg !== 'undefined')
+          
+        } catch (error) {//get conplete_Image
+          console.log("error to get boneId & comImg")
+        }
+        
+        })
       .catch(err=>{
         if(err.code == 'ECONNABORTED'){Promise.reject(err)}
         this.db_available_status = false
         this.animalGet=[]
         this.notify('error','Connection Lost')
       })
+      console.log(await get)
 
-      try {//get boneId
-        var boneId = await get.animal.boneId
-        // console.log("boneId : "+boneId)
+      // try {//get boneId
+      //   var boneId = await get.animal.boneId
+      //   // console.log("boneId : "+boneId)
         
-      } catch (error) {//get conplete_Image
-        console.log("boneId : "+boneId)
-      }
+      // } catch (error) {//get conplete_Image
+      //   console.log("boneId : "+boneId)
+      // }
 
-      try {
-        var comImg = await get.animal.completeImagePath
-        var comImgL = await comImg.length
-      } catch (error) {
-        console.log("Image : "+comImg)
-      }
+      // try {
+      //   var comImg = await get.animal.completeImagePath
+      //   var comImgL = await comImg.length
+      // } catch (error) {
+      //   console.log("Image : "+comImg)
+      // }
 
         if ( //มีข้อมูลกระดูก +มี complete image path
-          await typeof boneId !== 'undefined' &&
-          await typeof comImg !== 'undefined' &&
-          await comImgL > 0
+          await typeof this.boneId !== 'undefined' &&
+          await typeof this.comImg !== 'undefined'
+          // && await comImgL > 0
         ) {
           console.log(englishName+" pass condition");
 
@@ -246,7 +280,8 @@ export default {
           params: { 
             animalName: englishName,
             animalID: _id,
-            pullData: get,
+            // pullData: get,
+            pullData: this.data_from_api,
             project499:this.project499,
             api:this.apiLink,
             put:this.apiCommand_PUT_AnimalData,
