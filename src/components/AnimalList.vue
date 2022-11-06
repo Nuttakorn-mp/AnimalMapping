@@ -103,8 +103,8 @@ export default {
     filteredAndSorted() {
       // function to compare names
       function compare(a, b) {
-        if (a.name < b.name) return -1;
-        if (a.name > b.name) return 1;
+        if (a.englishName < b.englishName) return -1;
+        if (a.englishName > b.englishName) return 1;
         return 0;
       }
 
