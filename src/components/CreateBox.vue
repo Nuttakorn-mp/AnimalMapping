@@ -593,6 +593,8 @@ export default {
       // console.log(itemTitle)
     },
     imgLoad() {
+      console.log('img Load')
+      console.log(this.imgLoadList[this.$data.indexImg])
       return this.imgLoadList[this.$data.indexImg];
       // `http://localhost:3000/img/animals/img-1616772200490.jpeg`
     },
@@ -1035,7 +1037,7 @@ export default {
     }
     else{//false ==> ใช้ api ของสัตวแพทย์
       //config data here (real use)
-      console.log(this.project499)
+      // console.log(this.project499)
       this.apiLink = this.$route.params.api;
       this.apiCommand_POST_AnimalData = this.$route.params.post;
       this.apiCommand_PUT_AnimalData = this.$route.params.put;
@@ -1045,6 +1047,7 @@ export default {
 
       this.animaldata = this.$route.params.pullData;
       this.imgLoadList = this.animaldata.animal.completeImageLink;
+      console.log(this.imgLoadList)
       this.imgLength = this.animaldata.animal.completeImageLink.length;
 
       this.convert_data_structure_real_use_to_499_structure(this.animaldata.animal.boneId);
