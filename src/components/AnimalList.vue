@@ -224,7 +224,9 @@ export default {
       var get = await axios.get(this.apiLink+this.apicommand_GetAnimal_by_id+"/"+_id)
       .then(Response => {
         Response.data
+        console.log('in axios : ')
         console.log(Response.data)
+
         // console.log(Response.data.animal.boneId)
         // console.log(Response.data.animal.completeImagePath)
         try {//get boneId
