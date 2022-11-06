@@ -236,10 +236,10 @@ export default {
 
           // console.log(this.data_from_api)
 
-          // console.log(this.boneId)
-          // console.log(typeof this.boneId !== 'undefined')
-          // console.log(this.comImg)
-          // console.log(typeof this.comImg !== 'undefined')
+          console.log(this.boneId)
+          console.log(typeof this.boneId !== 'undefined')
+          console.log(this.comImg)
+          console.log(typeof this.comImg !== 'undefined')
           
         } catch (error) {//get conplete_Image
           console.log("error to get boneId & comImg")
@@ -252,7 +252,6 @@ export default {
         this.animalGet=[]
         this.notify('error','Connection Lost')
       })
-      console.log(await get)
 
       // try {//get boneId
       //   var boneId = await get.animal.boneId
@@ -270,8 +269,8 @@ export default {
       // }
 
         if ( //มีข้อมูลกระดูก +มี complete image path
-          await typeof this.boneId !== 'undefined' &&
-          await typeof this.comImg !== 'undefined'
+          typeof this.boneId !== 'undefined' &&
+          typeof this.comImg !== 'undefined'
           // && await comImgL > 0
         ) {
           console.log(englishName+" pass condition");
