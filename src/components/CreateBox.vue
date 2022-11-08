@@ -1265,7 +1265,8 @@ export default {
   left: 80px;
 }
 .save {
-  background-color: #c8c9d2;
+  /* background-color: #c8c9d2; */
+  background-color: chartreuse;
   border-radius: 5px;
   width: 200px;
   height: 50px;
@@ -1275,7 +1276,8 @@ export default {
   font-size: x-large;
 }
 .discard {
-  background-color: #ffffffc2;
+  /* background-color: #ffffffc2; */
+  background-color: rgba(255, 0, 0, 0.7);
   position: absolute;
   top: 650px;
   left: 500px;
