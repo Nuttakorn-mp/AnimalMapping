@@ -14,13 +14,13 @@
         </span>
       </div>
 
-      <span v-if="this.animalGet.length > 0 && this.db_available_status == true" 
+      <span v-if="this.animalGet.length > 0" 
         class="table-header-name" style="left: 200px">Name</span>
-      <span v-if="this.animalGet.length > 0 && this.db_available_status == true" 
+      <span v-if="this.animalGet.length > 0" 
         class="table-header-name" style="left: 700px">Bone</span>
-      <span v-if="this.animalGet.length > 0 && this.db_available_status == true" 
+      <span v-if="this.animalGet.length > 0" 
         class="table-header-name" style="left: 870px">Image</span>
-      <span v-if="this.animalGet.length > 0 && this.db_available_status == true" 
+      <span v-if="this.animalGet.length > 0" 
         class="table-header-name" style="left: 1150px">Clear Tag</span>
       <div class="element-name">
 
@@ -28,9 +28,11 @@
           <div v-for="item in filteredAndSorted" :key="item.englishName">
             <br />
 
+            <mouse-in>
             <span @click="goToPage(item.englishName, item._id)">{{
               item.englishName
             }}</span>
+            </mouse-in>
 
             <!-- ถ้ามี check status เปิดได้ -->
             <span v-if="item.bone == true" class="boneCheck">&#10003;</span>
@@ -48,18 +50,14 @@
             </button>
           </div>
 
-          <div v-if="this.animalGet.length == 0 && this.db_available_status == true && this.finish_Load == false" style="text-align:center;">
+          <div v-if="this.animalGet.length == 0 && this.finish_Load == false && this.db_available_status==true" style="text-align:center;">
             <pre> </pre>
             Loading...
           </div>
-          <div v-if="this.db_available_status == false" style="text-align:center;">
-            <pre> </pre>
-            database is offline
-          </div>
-          <!-- <div v-if="this.animalGet.length == 0 && this.finish_Load==true" style="text-align:center;">
+          <div v-if="this.animalGet.length == 0 && this.db_available_status==false" style="text-align:center;">
             <pre> </pre>
             service is not available
-          </div> -->
+          </div>
         </div>
       </div>
     </div>
@@ -142,9 +140,9 @@ export default {
 
     //delete ข้อมูลจับคู่ที่เคยทำไว้ทั้งหมด
     deleteTrack(data) {
-      console.log("delete tag call")
+      // console.log("delete tag call")
       // console.log(data)
-      console.log(data.data.length)
+      // console.log(data.data.length)
       if (data.data.length >0) {
         this.delList[0].animalId = data.animal._id
         this.delList[0].boneId = data.animal.boneId
@@ -181,8 +179,8 @@ export default {
         
       }
       else{
-        this.notify('success','Success'),
-        console.log("Nothing to delete")
+        this.notify('success','Success')
+        // ,console.log("Nothing to delete")
       }
     },
 
@@ -215,14 +213,9 @@ export default {
     ถ้ามีทั้งคู่ ก็ผ่านไปหน้าถัดไป
     ถ้าไม่มีก็แสดง alert window ว่าไม่มีและอยู่หน้าเดิม */
     async get_real_use(_id, englishName){
-      console.log()
-      console.log('get animal from id ')
-      console.log(this.apiLink+this.apicommand_GetAnimal_by_id+"/"+_id)
-      console.log()
-      console.log('Get from id : ')
 
       var get = await axios.get(this.apiLink+this.apicommand_GetAnimal_by_id+"/"+_id)
-      .then(Response => Response.data)
+      .then(Response => Response.data, this.db_available_status = true)
       .catch(err=>{
         if(err.code == 'ECONNABORTED'){Promise.reject(err)}
         this.db_available_status = false
@@ -252,14 +245,6 @@ export default {
         ) {
           console.log(englishName+" pass condition");
 
-          console.log(englishName)
-          console.log(_id)
-          console.log(get)
-          console.log(this.project499)
-          console.log(this.apiLink)
-          console.log(this.apiCommand_PUT_AnimalData)
-          console.log(this.apiCommand_POST_AnimalData)
-
           //ส่งข้อมูลจาก db และการตั้งค่าที่เซ็ตไว้จากหน้าแรก
           this.$router.push({
           name: "add-data",
@@ -279,55 +264,73 @@ export default {
       console.log("\n")
     }
   },
-  async created(){//กำหนด apiLink และ apiCommand ตรงนี้
-    // P pond DB  : "http://localhost:3000/animal/bone/web/"
-    // My DB      : "http://localhost:4000/getAnimalName/"
-
+  async created(){
     //ลองยิง db 499 : ถ้าไม่เจอภายใน 500 ms ==>  close
-    var res = await axios.get("http://localhost:4000"+"/getAnimalName",{timeout : 500})
+    var url =`${process.env.VUE_APP_ApiLink499}:${process.env.VUE_APP_Port499}${process.env.VUE_APP_ApiCommand_GetAllAnimalName499}`
+    var res = await axios.get(url,{timeout : 500})
+    // var res = await axios.get("http://localhost:4000"+"/getAnimalName",{timeout : 500})
     .then(Response => Response)
     .catch(err=>{if(err.code == 'ECONNABORTED'){Promise.reject(err)}})
 
     if(typeof res  !== 'undefined'){//ยิงแล้วเจอ
       console.log("499 db is online")
-      this.apiLink = "http://localhost:4000";
-      this.apiCommand_GetAllAnimalName = "/getAnimalName";
-      this.apicommand_GetAnimal_by_id = "/getAnimalName";
-      this.apiCommand_PUT_AnimalData = "/getAnimalName";
+      this.apiLink = `${process.env.VUE_APP_ApiLink499}:${process.env.VUE_APP_Port499}`
+      this.apiCommand_GetAllAnimalName = process.env.VUE_APP_ApiCommand_GetAllAnimalName499
+      this.apicommand_GetAnimal_by_id = process.env.VUE_APP_Apicommand_GetAnimal_by_id499
+      this.apiCommand_PUT_AnimalData = process.env.VUE_APP_ApiCommand_PUT_AnimalData499
+      this.apiCommand_POST_AnimalData = process.env.VUE_APP_ApiCommand_POST_AnimalData499
+      this.project499 = process.env.VUE_APP_Project499 === 'true' //convert String to Boolean
+      this.finish_Load = true;
+
+      // this.apiLink = "http://localhost:4000";
+      // this.apiCommand_GetAllAnimalName = "/getAnimalName";
+      // this.apicommand_GetAnimal_by_id = "/getAnimalName";
+      // this.apiCommand_PUT_AnimalData = "/getAnimalName";
+      // this.project499=true;
+      // this.finish_Load = true;
+
       this.animalGet = res.data
-      this.project499=true;
+      
     }
     else{// ยิงแล้ว db อันแรกปิด ==> ใช้อันที่สอง
-      this.apiLink ="http://localhost:3000"
-      this.apiCommand_GetAllAnimalName="/animal/get-all-animal-name"
-      this.apicommand_GetAnimal_by_id="/animal/bone/web"
-      this.apiCommand_PUT_AnimalData="/animal/update-tag"
-      this.apiCommand_POST_AnimalData="/animal/bone"
+      this.apiLink = `${process.env.VUE_APP_ApiLink}:${process.env.VUE_APP_Port}`
+      this.apiCommand_GetAllAnimalName = process.env.VUE_APP_ApiCommand_GetAllAnimalName
+      this.apicommand_GetAnimal_by_id = process.env.VUE_APP_Apicommand_GetAnimal_by_id
+      this.apiCommand_PUT_AnimalData = process.env.VUE_APP_ApiCommand_PUT_AnimalData
+      this.apiCommand_POST_AnimalData = process.env.VUE_APP_ApiCommand_POST_AnimalData
+
+      // this.apiLink ="http://localhost:3000"
+      // this.apiCommand_GetAllAnimalName="/animal/get-all-animal-name"
+      // this.apicommand_GetAnimal_by_id="/animal/bone/web"
+      // this.apiCommand_PUT_AnimalData="/animal/update-tag"
+      // this.apiCommand_POST_AnimalData="/animal/bone"
+
       axios.get(this.apiLink+this.apiCommand_GetAllAnimalName).then(Response => {
         console.log("optional db is online")
         this.animalGet = Response.data
-        this.project499=false;
+        // this.project499=false;
+        this.finish_Load = true;
+        this.project499 = process.env.process.env.VUE_APP_Project_is_not_499 === 'true' //convert String to Boolean
       })
       .catch(err =>{
         if(err.code == 'ECONNABORTED'){Promise.reject(err)}
-        console.log("both db close")
         this.db_available_status = false
-        // console.log(this.db_available_status)
       })
     }
 
     // ตั้งค่า และเปิดตั้งแต่บรรทัดนี้
-    // this.apiLink ="http://localhost:3000"
-    // this.apiCommand_GetAllAnimalName="/animal/get-all-animal-name"
-    // this.apicommand_GetAnimal_by_id="/animal/bone/web"
-    // this.apiCommand_PUT_AnimalData="/animal/update-tag"
-    // this.apiCommand_POST_AnimalData="/animal/bone"
+    // this.apiLink = `${process.env.VUE_APP_ApiLink}:${process.env.VUE_APP_Port}`
+    // this.apiCommand_GetAllAnimalName = process.env.VUE_APP_ApiCommand_GetAllAnimalName
+    // this.apicommand_GetAnimal_by_id = process.env.VUE_APP_Apicommand_GetAnimal_by_id
+    // this.apiCommand_PUT_AnimalData = process.env.VUE_APP_ApiCommand_PUT_AnimalData
+    // this.apiCommand_POST_AnimalData = process.env.VUE_APP_ApiCommand_POST_AnimalData
 
 
     // axios.get(this.apiLink+this.apiCommand_GetAllAnimalName).then(Response => {
     //   console.log("optional db is online")
     //   this.animalGet = Response.data
-    //   this.project499=false;
+    //   this.finish_Load = true;
+    //   this.project499 = process.env.process.env.VUE_APP_Project_is_not_499 === 'true' //convert String to Boolean
     // })
     // .catch(err =>{
     //   if(err.code == 'ECONNABORTED'){Promise.reject(err)}

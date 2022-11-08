@@ -593,10 +593,7 @@ export default {
       // console.log(itemTitle)
     },
     imgLoad() {
-      console.log('img Load')
-      console.log(this.imgLoadList[this.$data.indexImg])
       return this.imgLoadList[this.$data.indexImg];
-      // `http://localhost:3000/img/animals/img-1616772200490.jpeg`
     },
     nextImg() {
       this.$data.indexImg = (this.$data.indexImg + 1) % this.imgLength;
@@ -859,7 +856,7 @@ export default {
         this.createList = [
           ...new Map(this.createList.map((item) => [item.title, item])).values(),
         ]; //[item.title, item]
-        console.log(this.createList)
+        // console.log(this.createList)
       }
 
       else{
@@ -884,8 +881,8 @@ export default {
     convert_data_structure_real_use_to_499_structure(_boneId){
       // console.log(typeof this.animaldata)
       this.animaldata.boneId = _boneId
-      console.log(this.animaldata)
-      console.log("######################################")
+      // console.log(this.animaldata)
+      // console.log("######################################")
     },
     comparer(otherArray) {
       return function (current) {
@@ -901,7 +898,7 @@ export default {
         axios.put(this.apiLink+this.apiCommand_POST_AnimalData+"/"+data.animalId, data)
         .then(
           this.notify('success','Success'),
-          console.log("post complete"),
+          // console.log("post complete"),
           // console.log(data),
           this.$router.replace("/modify-data")
         );
@@ -910,7 +907,7 @@ export default {
         axios.put(this.apiLink+this.apiCommand_POST_AnimalData, data).then(
         // axios.put("http://localhost:4000/getAnimalName/"+data.animalId, data).then(
           this.notify('success','Success'),
-          console.log("post complete"),
+          // console.log("post complete"),
           // console.log(data),
           this.$router.replace("/modify-data")
         );
@@ -922,7 +919,7 @@ export default {
         axios.put(this.apiLink+this.apiCommand_PUT_AnimalData+"/"+data.animalId, data)
         .then(
           this.notify('success','Success'),
-          console.log("put complete"),
+          // console.log("put complete"),
           // console.log(data),
           this.$router.replace("/modify-data")
         );
@@ -931,7 +928,7 @@ export default {
         axios.put(this.apiLink+this.apiCommand_PUT_AnimalData, data)
         .then(
           this.notify('success','Success'),
-          console.log("put complete"),
+          // console.log("put complete"),
           // console.log(data),
           this.$router.replace("/modify-data")
         );
@@ -1047,7 +1044,6 @@ export default {
 
       this.animaldata = this.$route.params.pullData;
       this.imgLoadList = this.animaldata.animal.completeImageLink;
-      console.log(this.imgLoadList)
       this.imgLength = this.animaldata.animal.completeImageLink.length;
 
       this.convert_data_structure_real_use_to_499_structure(this.animaldata.animal.boneId);
