@@ -360,8 +360,8 @@ export default {
         this.dataGet[0].data.length == null
       ) {
         console.log("start post");
-        console.log("pic tag count : ",this.picTagCount);//0
-        console.log("createJson : ",this.createJson); //1 , pic :3
+        // console.log("pic tag count : ",this.picTagCount);
+        // console.log("createJson : ",this.createJson); 
         this.postList.push({
           animalId: this.dataGet[0].animal._id,
           boneId: this.dataGet[0].boneId,
@@ -396,8 +396,8 @@ export default {
           this.postList[0].data[pic].imageName =
             this.dataGet[0].animal.completeImagePath[pic];
         }
-        console.log("post is ");
-        console.log(this.postList[0]);
+        // console.log("post is ");
+        // console.log(this.postList[0]);
         // console.log("----------------------");
         // console.log(" ")
         // console.log("POST...")
@@ -1041,7 +1041,6 @@ export default {
       this.imgLength = this.animaldata.animal.completeImageLink.length;
 
       this.initData_for_499();
-      console.log(this.animaldata)
     }
     else{//false ==> ใช้ api ของสัตวแพทย์
       //config data here (real use)
