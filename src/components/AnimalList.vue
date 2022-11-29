@@ -199,7 +199,7 @@ export default {
         })
     },
 
-    //ส่งผู้ใช้ไปหน้าถัดไปโดยเรียก async get                 **เรียก async แบบตรงๆไม่ได้เลยต้องใช้ function ธรรมดาเรียกอีกชั้นนึง
+    //ส่งผู้ใช้ไปหน้าถัดไปโดยเรียก async get
     goToPage(englishName, _id) {
       // console.log("U click");
       let _this= this
@@ -268,12 +268,11 @@ export default {
     //ลองยิง db 499 : ถ้าไม่เจอภายใน 500 ms ==>  close
     var url =`${process.env.VUE_APP_ApiLink499}:${process.env.VUE_APP_Port499}${process.env.VUE_APP_ApiCommand_GetAllAnimalName499}`
     var res = await axios.get(url,{timeout : 500})
-    // var res = await axios.get("http://localhost:4000"+"/getAnimalName",{timeout : 500})
     .then(Response => Response)
     .catch(err=>{if(err.code == 'ECONNABORTED'){Promise.reject(err)}})
 
     if(typeof res  !== 'undefined'){//ยิงแล้วเจอ
-      console.log("499 db is online")
+      // console.log("499 db is online")
       this.apiLink = `${process.env.VUE_APP_ApiLink499}:${process.env.VUE_APP_Port499}`
       this.apiCommand_GetAllAnimalName = process.env.VUE_APP_ApiCommand_GetAllAnimalName499
       this.apicommand_GetAnimal_by_id = process.env.VUE_APP_Apicommand_GetAnimal_by_id499
@@ -281,14 +280,6 @@ export default {
       this.apiCommand_POST_AnimalData = process.env.VUE_APP_ApiCommand_POST_AnimalData499
       this.project499 = process.env.VUE_APP_Project499 === 'true' //convert String to Boolean
       this.finish_Load = true;
-
-      // this.apiLink = "http://localhost:4000";
-      // this.apiCommand_GetAllAnimalName = "/getAnimalName";
-      // this.apicommand_GetAnimal_by_id = "/getAnimalName";
-      // this.apiCommand_PUT_AnimalData = "/getAnimalName";
-      // this.project499=true;
-      // this.finish_Load = true;
-
       this.animalGet = res.data
       
     }
@@ -298,17 +289,9 @@ export default {
       this.apicommand_GetAnimal_by_id = process.env.VUE_APP_Apicommand_GetAnimal_by_id
       this.apiCommand_PUT_AnimalData = process.env.VUE_APP_ApiCommand_PUT_AnimalData
       this.apiCommand_POST_AnimalData = process.env.VUE_APP_ApiCommand_POST_AnimalData
-
-      // this.apiLink ="http://localhost:3000"
-      // this.apiCommand_GetAllAnimalName="/animal/get-all-animal-name"
-      // this.apicommand_GetAnimal_by_id="/animal/bone/web"
-      // this.apiCommand_PUT_AnimalData="/animal/update-tag"
-      // this.apiCommand_POST_AnimalData="/animal/bone"
-
       axios.get(this.apiLink+this.apiCommand_GetAllAnimalName).then(Response => {
-        console.log("optional db is online")
+        // console.log("optional db is online")
         this.animalGet = Response.data
-        // this.project499=false;
         this.finish_Load = true;
         this.project499 = process.env.process.env.VUE_APP_Project_is_not_499 === 'true' //convert String to Boolean
       })
@@ -350,7 +333,6 @@ export default {
   top: 100px;
   width: 1330px;
   height: 600px;
-  /* border: 1px solid black; */
 }
 .blank {
   display: flex;
