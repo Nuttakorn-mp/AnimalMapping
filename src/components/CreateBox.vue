@@ -360,15 +360,19 @@ export default {
         this.dataGet[0].data.length == null
       ) {
         console.log("start post");
+        console.log("pic tag count : ",this.picTagCount);//0
+        console.log("createJson : ",this.createJson); //1 , pic :3
         this.postList.push({
           animalId: this.dataGet[0].animal._id,
-          boneId: this.dataGet[0].bone._id,
+          boneId: this.dataGet[0].boneId,
           data: [],
         });
-        for (let i = -1; i < this.picTagCount; i++) {//เพิ่มรูปตามที่ tag
+        // for (let i = -1; i < this.picTagCount; i++) {//เพิ่มรูปตามที่ tag
+        for(let i = 0; i<this.dataGet[0].animal.completeImagePath.length; i++){ //gen ทุกรูปในครั้งแรกที่ tag
           this.postList[0].data.push({
             // id:__
-            imageName: i + 1,
+            // imageName: i + 1,
+            imageName: i,
             coordinator: [],
           });
         }
@@ -387,12 +391,13 @@ export default {
             lineToX: this.createJson[i].lineToX,
             lineToY: this.createJson[i].LineToY,
             description: "-",
+            flag: 1,
           });
           this.postList[0].data[pic].imageName =
             this.dataGet[0].animal.completeImagePath[pic];
         }
-        // console.log("post is ");
-        // console.log(this.postList[0]);
+        console.log("post is ");
+        console.log(this.postList[0]);
         // console.log("----------------------");
         // console.log(" ")
         // console.log("POST...")
@@ -532,13 +537,18 @@ export default {
           // console.log("i is "+i)
           this.putList[0].data[i].imageName =
             this.dataGet[0].animal.completeImagePath[i];
+
+          try {
+            this.putList[0].data[i].imageURL = this.dataGet[0].animal.completeImageLink[i]
+          } catch (error) {this.putList[0].data[i].imageURL = null}
+
           // this.putList[0].data[i].imageURL = this.dataGet[0].animal.completeImageLink[i]
         }
 
         // console.log("----- array dataGet update (prepare Put) -----");
         // console.log(this.dataGet[0]);
-        // console.log("putList is");
-        // console.log(this.putList[0]);
+        console.log("putList is");
+        console.log(this.putList[0]);
         // console.log(this.createJson[0].pic)
         // console.log("----------------------");
         // console.log(" ")
@@ -1031,6 +1041,7 @@ export default {
       this.imgLength = this.animaldata.animal.completeImageLink.length;
 
       this.initData_for_499();
+      console.log(this.animaldata)
     }
     else{//false ==> ใช้ api ของสัตวแพทย์
       //config data here (real use)
