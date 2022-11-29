@@ -116,9 +116,6 @@ export default {
 
       return this.animalGet
         .filter((user) => {
-          /* console.log(user.name.toLowerCase().includes(this.search.toLowerCase())); */
-          // console.log(user.name.toLowerCase())
-          // console.log(this.search.toLowerCase())
           return user.englishName
             .toLowerCase()
             .includes(this.searchInput.toLowerCase());
@@ -140,26 +137,21 @@ export default {
 
     //delete ข้อมูลจับคู่ที่เคยทำไว้ทั้งหมด
     deleteTrack(data) {
-      // console.log("delete tag call")
-      // console.log(data)
-      // console.log(data.data.length)
       if (data.data.length >0) {
         this.delList[0].animalId = data.animal._id
         this.delList[0].boneId = data.animal.boneId
         this.delList[0].data = data.data
         for (let i = 0; i < data.data.length; i++) {
           for (let j = 0; j < data.data[i].coordinator.length; j++) {
-            //this.delList[0].data[i].coordinator[j].flag = 3      //frag 3== delete, frag 2 == edit, frag 1== add
+            //frag 3== delete, frag 2 == edit, frag 1== add
             this.delList[0].data[i].coordinator[j].flag = 3
           } // end nest for
         }// end out for
 
         // call put api here
-        // console.log(this.delList[0])
         if(this.project499){//true ==> ใช้ api ของ 499
           axios.put(this.apiLink+this.apiCommand_PUT_AnimalData+"/"+this.delList[0].animalId,this.delList[0])
           .then(
-            // window.alert("Delete Complete!")
             this.notify('success','Success')
             )
           .catch(err=>{
@@ -169,7 +161,6 @@ export default {
         else{//false ==> ใช้ api ของสัตวแพทย์
           axios.put(this.apiLink+this.apiCommand_PUT_AnimalData,this.delList[0])
           .then(
-            // window.alert("Delete Complete!")
             this.notify('success','Success')
             )
           .catch(err=>{
@@ -180,7 +171,6 @@ export default {
       }
       else{
         this.notify('success','Success')
-        // ,console.log("Nothing to delete")
       }
     },
 
@@ -190,7 +180,6 @@ export default {
 
       axios.get(this.apiLink+this.apicommand_GetAnimal_by_id+"/"+id).then(Response => {
         _this.deleteTrack(Response.data)
-        // console.log(Response.code)
         })
       .catch(err=>{
         if(err.code == 'ECONNABORTED'){Promise.reject(err)}

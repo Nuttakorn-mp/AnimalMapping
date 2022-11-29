@@ -119,9 +119,6 @@ export default {
         }
 
         const app = new Vue({
-          // spare line 165
-          //   <button :style="deleteIcon"><img src=${require("../assets/icon/x-mark.png")} alt="" :style="deleteImg" @click="destroy()"></button>
-
           template: `
           <div id="${event.x}${Math.ceil(event.y)}${
             this.indexImg
@@ -139,9 +136,6 @@ export default {
             dragCreate: {
               "min-width": "25px",
               "min-height": "15px",
-              // width: "25px",
-              // height: "auto",
-              // border: "1px solid green",
               "background-color": "whitesmoke",
               position: "absolute",
               top: yCal + "px",
@@ -157,15 +151,12 @@ export default {
               height: "15px",
               width: "15px",
               "bcakground-color": "unset",
-              // "text-align": "left",
               "z-index": 3,
             },
             deleteIcon: {
               "background-color": "white",
               border: "unset",
               "min-width": "25px",
-              // "position": "absolute",
-              // "z-index": 2,
             },
             show: true,
             function() {
@@ -182,28 +173,16 @@ export default {
                 if (this.createList[0].title.length > 13) {
                   yNew = yNew + (this.createList[0].title.length - 13) * 5;
                 }
-                // if (this.createList[0].title.length>13 && this.Q==4) {
-                //   yNew = yNew + (this.createList[0].title.length - 13 )*5
-                // }
                 this.axis.x = yNew + this.refAxis.x;
                 this.dragCreate.left = String(yNew + this.refAxis.x) + "px";
               }
-              // console.log(yNew)
-              // console.log(this.axis.x )
-
-              // console.log(this.createList[0].title.length);
               app.$mount();
             },
             destroy() {
               console.log("element id :" + this.$el.id + " is remove");
-              // console.log(this.$el.id)
-              // console.log(this.$root)
-              // console.log(this)
-              // console.log(document.getElementById("click-box"))
               this.$el.parentNode.removeChild(this.$el);
               var line = document.getElementById(this.$el.id + "L").__vue__;
               line.$el.parentNode.removeChild(line.$el);
-              // console.log(this.id)
             },
           },
           components: { draggable },
@@ -285,7 +264,6 @@ export default {
         } // end IF
       } // end Loop
 
-      //------------------------------------------------------------------------------------
       if (//post case
         this.dataGet[0].data.length == 0 ||
         this.dataGet[0].data.length == null
@@ -330,43 +308,23 @@ export default {
         this.putList = [];
         console.log("start put");
         for (let i = 0; i < this.dataGet[0].data.length; i++) {
-          // console.log("i is "+i)
-          // console.log(" ")
 
           // Object.keys(this.dataGet[0].data[i]).length  นับ length ใน obj
           for (let j = 0; j < this.dataGet[0].data[i].coordinator.length; j++) {
-            // console.log("   i is "+i)
-            // console.log("   j is "+ j)
-
-            //`${event.x}${Math.ceil(event.y)}${this.indexImg}`
-            // console.log(this.dataGet[0].data[i].coordinator[j])
-
             var idIndataGet =
               `${this.dataGet[0].data[i].coordinator[j].lineStartX}${Math.ceil(this.dataGet[0].data[i].coordinator[j].lineStartY)}${this.dataGet[0].animal.completeImagePath.indexOf(this.dataGet[0].data[i].imageName)}`;
-            // console.log("id is "+idIndataGet)
-            
             var checkIndataGet = document.getElementById(idIndataGet);
-            // console.log("check by id is "+ checkIndataGet)
+
             if (checkIndataGet !== null) {
-              // console.log("   flag change!");
-              // console.log(this.dataGet[0].data[i].coordinator[j])
               this.dataGet[0].data[i].coordinator[j].flag = 2;
               this.dataGet[0].data[i].coordinator[j].title =
                 checkIndataGet.__vue__.createList[0].title;
-              // console.log("result is :");
-              // console.log(this.dataGet[0].data[i].coordinator[j]);
-              // console.log(" ")
-
-
             } 
             else {
-              // console.log("   flag remove!");
-              // console.log(this.dataGet[0].data[i].coordinator[j])
               this.dataGet[0].data[i].coordinator[j].flag = 3;
             }
           } 
         }
-        // console.log("case 2 : data&flag checked!");
 
         // เอา ใหม่(ที่มากกว่า) - เก่า(ที่น้อยกว่า)
         /* เช็คว่ามีเพิ่ม tag อันใหม่มั๊ย
@@ -397,7 +355,6 @@ export default {
             description: "-",
             flag: 1,
           });
-          // console.log("push");
         }
 
         // เพิ่มputlist ก่อนเรียก API
@@ -407,7 +364,6 @@ export default {
           data: this.dataGet[0].data,
         });
         for (let i = 0; i < this.putList[0].data.length; i++) {
-          // console.log("i is "+i)
           this.putList[0].data[i].imageName =
             this.dataGet[0].animal.completeImagePath[i];
 
@@ -584,7 +540,6 @@ export default {
             "min-width": "25px",
             width: Math.sqrt(testsum) + "px",
             "border-top": "1px solid red",
-            // "width":"40px",
             transform: `rotate(${deg}deg)`,
             "transform-origin": "0% 0%",
             top: this.y + "px",
@@ -614,7 +569,6 @@ export default {
           //วนตาม จน tag
           this.firstPut.push({
             pic: this.dataGet[0].animal.completeImagePath.indexOf(this.dataGet[0].data[i].imageName), 
-            //`${event.x}${Math.ceil(event.y)}${this.indexImg}`
             id:
               `${this.dataGet[0].data[i].coordinator[j].lineStartX}${Math.ceil(this.dataGet[0].data[i].coordinator[j].lineStartY)}${this.dataGet[0].animal.completeImagePath.indexOf(this.dataGet[0].data[i].imageName)}`,
             title: this.dataGet[0].data[i].coordinator[j].title,
@@ -646,12 +600,6 @@ export default {
         } else {
           _this.addDragBox(load, this.firstPut[k].title);
         }
-        // console.log("createJson is")
-        // var test = document.getElementById(id);
-        // console.log(test.__vue__.axis)
-        // console.log("axis")
-        // var change = document.getElementById(this.firstPut[k].id)
-        // console.log(change.__vue__)
       }
 
     },
@@ -787,9 +735,8 @@ export default {
       imgLength: null,
       animalName:'',
       dup: [],
-
       search: "",
-      description: [{ descriptionMain: "" }], //****************************
+      description: [{ descriptionMain: "" }],
       disable: true,
       moved: false,
       show: true,
