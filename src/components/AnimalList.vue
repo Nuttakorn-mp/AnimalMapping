@@ -199,11 +199,11 @@ export default {
         this.animalGet=[]
         this.notify('error','Connection Lost')
       })
-      // try {//get boneId
-        // var boneId = await get.animal.boneId
-      // } catch (error) {//get conplete_Image
+      try {//get boneId
+        this.boneId = await get.animal.boneId
+      } catch (error) {//get conplete_Image
         // console.log("boneId : "+boneId)
-      // }
+      }
 
       try {
         var comImg = await get.animal.completeImagePath
