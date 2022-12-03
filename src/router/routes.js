@@ -11,8 +11,5 @@ const routes = [
   {path:'/modify-data', component:AnimalList, props: true},
   { path: "/add-data/*", component: NotFound },
   {path:'*', redirect:'/modify-data' ,component:AnimalList, props: true},// เด้งไปบรรทัดที่ 11
-  // {path:'/', redirect:'/modify-data' ,component:AnimalList, props: true},// เด้งไปบรรทัดที่ 11
-  // { path: "*", component: NotFound }
 ];
-// Router.replace({ path: '*', redirect: '/modify-data' })
 export default routes;  
