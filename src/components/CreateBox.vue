@@ -179,7 +179,6 @@ export default {
               app.$mount();
             },
             destroy() {
-              console.log("element id :" + this.$el.id + " is remove");
               this.$el.parentNode.removeChild(this.$el);
               var line = document.getElementById(this.$el.id + "L").__vue__;
               line.$el.parentNode.removeChild(line.$el);
@@ -268,7 +267,6 @@ export default {
         this.dataGet[0].data.length == 0 ||
         this.dataGet[0].data.length == null
       ) {
-        console.log("start post");
         this.postList.push({
           animalId: this.dataGet[0].animal._id,
           boneId: this.dataGet[0].boneId,
@@ -300,13 +298,11 @@ export default {
 
         // call API POST //
         _this.postAPI(this.postList[0]);
-        console.log(" ")
 
       } 
       //put case
       else {//กรณีข้อมูลที่ get มาจาก API เคย Tag แล้ว (dataGet != null OR dataGet.length > 0)
         this.putList = [];
-        console.log("start put");
         for (let i = 0; i < this.dataGet[0].data.length; i++) {
 
           // Object.keys(this.dataGet[0].data[i]).length  นับ length ใน obj
@@ -372,14 +368,8 @@ export default {
           } catch (error) {this.putList[0].data[i].imageURL = null}
         }
 
-        // console.log("----- array dataGet update (prepare Put) -----");
-        // console.log("putList is");
-        // console.log(this.putList[0]);
-        // console.log("----------------------");
-
         //call API PUT
         _this.putAPI(this.putList[0]);
-        console.log(" ");
       }
     },
     discard() {
@@ -410,7 +400,6 @@ export default {
       const itemTitle = evt.dataTransfer.getData("itemTitle");
       const item = this.createList.find((item) => item.title == itemTitle);
 
-      console.log(this.posAndBox[0].title);
       this.exampleList.pop(`${this.posAndBox[0].title}`);
       this.posAndBox[0] = { id: item.id, title: itemTitle };
       this.exampleList.push({ id: item.id, title: itemTitle });
@@ -501,7 +490,6 @@ export default {
         testsum = Math.pow(Math.abs(this.x-xCal),2)   +  Math.pow(Math.abs(this.y-yCal),2);
         
       } else if (this.x < 390 && this.y <= 210) {//Q1
-        console.log(`${this.x}${Math.ceil(this.y)}${this.indexImg}`);
         xDistance =Math.abs(this.x-(xCal+15+document.getElementById(`${this.x}${Math.ceil(this.y)}${this.indexImg}`).__vue__._data.createList[0].title.length*8.5));
         yDistance =Math.abs(this.y-(yCal+25) );
         deg = (Math.atan2(yDistance,xDistance)*180/Math.PI)+180;
@@ -554,9 +542,6 @@ export default {
       stat.appendChild(vueContainer);
       app.$mount(vueContainer);
 
-    },
-    store() {// เอาไว้ใช้เทสเฉพาะส่วน
-      console.log("test function")
     },
     loadTag() {//First time load tag
       let _this = this;

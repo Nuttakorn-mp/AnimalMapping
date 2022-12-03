@@ -183,14 +183,12 @@ export default {
         })
       .catch(err=>{
         if(err.code == 'ECONNABORTED'){Promise.reject(err)}
-        console.log("Database offline")
         _this.notify('error','Connection Lost')
         })
     },
 
     //ส่งผู้ใช้ไปหน้าถัดไปโดยเรียก async get
     goToPage(englishName, _id) {
-      // console.log("U click");
       let _this= this
       _this.get_real_use(_id, englishName)
     },
@@ -212,19 +210,18 @@ export default {
         this.notify('error','Connection Lost')
       })
 
-      try {//get boneId
-        var boneId = await get.animal.boneId
-        // console.log("boneId : "+boneId)
+      // try {//get boneId
+        // var boneId = await get.animal.boneId
         
-      } catch (error) {//get conplete_Image
-        console.log("boneId : "+boneId)
-      }
+      // } catch (error) {//get conplete_Image
+        // console.log("boneId : "+boneId)
+      // }
 
       try {
         var comImg = await get.animal.completeImagePath
         var comImgL = await comImg.length
       } catch (error) {
-        console.log("Image : "+comImg)
+        // console.log("Image : "+comImg)
       }
 
         if ( //มีข้อมูลกระดูก +มี complete image path
@@ -232,7 +229,6 @@ export default {
           typeof this.comImg !== 'undefined'
           && await comImgL > 0
         ) {
-          console.log(englishName+" pass condition");
 
           //ส่งข้อมูลจาก db และการตั้งค่าที่เซ็ตไว้จากหน้าแรก
           this.$router.push({
@@ -250,7 +246,6 @@ export default {
         });
 
         }
-      console.log("\n")
     }
   },
   async created(){
@@ -261,7 +256,6 @@ export default {
     .catch(err=>{if(err.code == 'ECONNABORTED'){Promise.reject(err)}})
 
     if(typeof res  !== 'undefined'){//ยิงแล้วเจอ
-      // console.log("499 db is online")
       this.apiLink = `${process.env.VUE_APP_ApiLink499}:${process.env.VUE_APP_Port499}`
       this.apiCommand_GetAllAnimalName = process.env.VUE_APP_ApiCommand_GetAllAnimalName499
       this.apicommand_GetAnimal_by_id = process.env.VUE_APP_Apicommand_GetAnimal_by_id499
@@ -279,7 +273,6 @@ export default {
       this.apiCommand_PUT_AnimalData = process.env.VUE_APP_ApiCommand_PUT_AnimalData
       this.apiCommand_POST_AnimalData = process.env.VUE_APP_ApiCommand_POST_AnimalData
       axios.get(this.apiLink+this.apiCommand_GetAllAnimalName).then(Response => {
-        // console.log("optional db is online")
         this.animalGet = Response.data
         this.finish_Load = true;
         this.project499 = process.env.process.env.VUE_APP_Project_is_not_499 === 'true' //convert String to Boolean
@@ -299,7 +292,6 @@ export default {
 
 
     // axios.get(this.apiLink+this.apiCommand_GetAllAnimalName).then(Response => {
-    //   console.log("optional db is online")
     //   this.animalGet = Response.data
     //   this.finish_Load = true;
     //   this.project499 = process.env.process.env.VUE_APP_Project_is_not_499 === 'true' //convert String to Boolean
