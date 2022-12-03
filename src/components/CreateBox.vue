@@ -17,7 +17,6 @@
           class="drawLine-box"
           @click="addDragBox(axis(getMousePos()))"
         ></div>
-
         <button class="prev" @click="prevImg()">&#10094;</button>
         <button class="next" @click="nextImg()">&#10095;</button>
       </div>
@@ -29,8 +28,6 @@
           class="box-search"
           placeholder="Search title.."
         />
-
-
         <div class="data-in-box">
           <div
             class="data-drag"
@@ -51,8 +48,6 @@
     </div>
   </div>
 </template>
-
-
 
 <script>
 import Vue from "vue/dist/vue.esm";
@@ -785,7 +780,6 @@ export default {
       this.initData_for_499();
     }
     
-
   },
 };
 </script>

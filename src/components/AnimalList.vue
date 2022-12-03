@@ -11,7 +11,6 @@
             <img src= "~@/assets/icon/magnify.svg" @error="$event.target.src='/src/assets/icon/magnify.svg'"/>
         </span>
       </div>
-
       <span v-if="this.animalGet.length > 0" 
         class="table-header-name" style="left: 200px">Name</span>
       <span v-if="this.animalGet.length > 0" 
@@ -21,11 +20,9 @@
       <span v-if="this.animalGet.length > 0" 
         class="table-header-name" style="left: 1150px">Clear Tag</span>
       <div class="element-name">
-
         <div class="result-search">
           <div v-for="item in filteredAndSorted" :key="item.englishName">
             <br />
-
             <mouse-in>
             <span @click="goToPage(item.englishName, item._id)">{{
               item.englishName
@@ -38,7 +35,6 @@
             <span v-if="item.completeImage == true" class="imgCheck">&#10003;</span>
             <span v-if="item.completeImage == false" class="imgCheck">&#10006;</span>
 
-
             <button class="delete-Button">
               <img
                 src="../assets/delete.png"
@@ -47,7 +43,6 @@
               />
             </button>
           </div>
-
           <div v-if="this.animalGet.length == 0 && this.finish_Load == false && this.db_available_status==true" style="text-align:center;">
             <pre> </pre>
             Loading...
@@ -59,7 +54,6 @@
         </div>
       </div>
     </div>
-  
   </div>
 </template>
 <script>
@@ -67,7 +61,6 @@ import Vue from "vue/dist/vue.esm";
 import Router from "vue-router";
 import VueAxios from "vue-axios";
 import axios from "axios";
-
 import Notifications from 'vue-notification'
 Vue.use(Notifications)
 Vue.use(Router);
@@ -198,7 +191,6 @@ export default {
     ถ้ามีทั้งคู่ ก็ผ่านไปหน้าถัดไป
     ถ้าไม่มีก็แสดง alert window ว่าไม่มีและอยู่หน้าเดิม */
     async get_real_use(_id, englishName){
-
       var get = await axios.get(this.apiLink+this.apicommand_GetAnimal_by_id+"/"+_id)
       .then(Response => Response.data, this.db_available_status = true)
       .catch(err=>{
@@ -207,10 +199,8 @@ export default {
         this.animalGet=[]
         this.notify('error','Connection Lost')
       })
-
       // try {//get boneId
         // var boneId = await get.animal.boneId
-        
       // } catch (error) {//get conplete_Image
         // console.log("boneId : "+boneId)
       // }
