@@ -199,41 +199,22 @@ export default {
         this.animalGet=[]
         this.notify('error','Connection Lost')
       })
-      try {//get boneId
-        this.boneId = await get.animal.boneId
-      } catch (error) {//get conplete_Image
-        // console.log("boneId : "+boneId)
-      }
 
-      try {
-        var comImg = await get.animal.completeImagePath
-        var comImgL = await comImg.length
-      } catch (error) {
-        // console.log("Image : "+comImg)
-      }
+      // console.log(await get)
+      //ส่งข้อมูลจาก db และการตั้งค่าที่เซ็ตไว้จากหน้าแรก
+      this.$router.push({
+      name: "add-data",
+      params: { 
+        animalName: englishName,
+        animalID: _id,
+        pullData: get,
+        project499:this.project499,
+        api:this.apiLink,
+        put:this.apiCommand_PUT_AnimalData,
+        post:this.apiCommand_POST_AnimalData
+        },
+    });
 
-        if ( //มีข้อมูลกระดูก +มี complete image path
-          typeof this.boneId !== 'undefined' &&
-          typeof this.comImg !== 'undefined'
-          && await comImgL > 0
-        ) {
-
-          //ส่งข้อมูลจาก db และการตั้งค่าที่เซ็ตไว้จากหน้าแรก
-          this.$router.push({
-          name: "add-data",
-          params: { 
-            animalName: englishName,
-            animalID: _id,
-            pullData: get,
-            // pullData: this.data_from_api,
-            project499:this.project499,
-            api:this.apiLink,
-            put:this.apiCommand_PUT_AnimalData,
-            post:this.apiCommand_POST_AnimalData
-           },
-        });
-
-        }
     }
   },
   async created(){
